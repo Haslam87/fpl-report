@@ -1,0 +1,13 @@
+{
+  "name": "fpl-report",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "report": "node fpl-report.js",
+    "post": "node fpl-report.js --post"
+  }
+}
