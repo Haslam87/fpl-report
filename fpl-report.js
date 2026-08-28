@@ -222,19 +222,25 @@ async function fetchLeagueStandings(leagueId) {
   return { leagueName, entries: results };
 }
 
-async function fetchLiveGwPoints(gw) {
+// Returns Map<elementId, {points, cleanSheets}>. Callers that only need
+// points can do `.get(id)?.points`.
+async function fetchLiveGwStats(gw) {
   const data = await fplGet(`event/${gw}/live/`);
   requireShape(data, (d) => Array.isArray(d?.elements), `event/${gw}/live/.elements should be an array`);
-  const points = new Map();
+  const stats = new Map();
   for (const el of data.elements) {
     requireShape(
       el,
-      (e) => typeof e?.id === 'number' && e?.stats && typeof e.stats.total_points === 'number',
-      `event/${gw}/live/.elements[].stats.total_points should be a number`
+      (e) =>
+        typeof e?.id === 'number' &&
+        e?.stats &&
+        typeof e.stats.total_points === 'number' &&
+        typeof e.stats.clean_sheets === 'number',
+      `event/${gw}/live/.elements[].stats.total_points/clean_sheets should be numbers`
     );
-    points.set(el.id, el.stats.total_points);
+    stats.set(el.id, { points: el.stats.total_points, cleanSheets: el.stats.clean_sheets });
   }
-  return points;
+  return stats;
 }
 
 async function fetchManagerData(entryId, gw, limit) {
@@ -711,7 +717,44 @@ function longestSufferingBenchWarmer(benchWarmerStreaks, managers) {
   return { value: max, winners };
 }
 
-function computeInsights(managers, elementLivePoints, baselineStandings, rankHistory, benchWarmerStreaks) {
+// Highest-scoring player who was actually started (not benched) by at
+// least one manager in the league this gameweek.
+function playerOfTheWeek(managers, elementLiveStats) {
+  const startedElements = new Set();
+  for (const m of managers) {
+    for (const p of m.picks) {
+      if (!BENCH_POSITIONS.has(p.position)) startedElements.add(p.element);
+    }
+  }
+  if (startedElements.size === 0) return null;
+
+  const scored = [...startedElements].map((element) => ({
+    element,
+    points: elementLiveStats.get(element)?.points ?? 0,
+  }));
+  const max = Math.max(...scored.map((s) => s.points));
+  if (max <= 0) return null;
+  return { value: max, elements: scored.filter((s) => s.points === max).map((s) => s.element) };
+}
+
+// Most clean sheets across a manager's starting XI this gameweek.
+function theWall(managers, elementLiveStats) {
+  const scored = managers.map((m) => {
+    let cleanSheets = 0;
+    for (const p of m.picks) {
+      if (BENCH_POSITIONS.has(p.position)) continue;
+      cleanSheets += elementLiveStats.get(p.element)?.cleanSheets ?? 0;
+    }
+    return { m, cleanSheets };
+  });
+  const max = Math.max(...scored.map((s) => s.cleanSheets));
+  if (max <= 0) return null;
+  const winners = scored.filter((s) => s.cleanSheets === max);
+  if (winners.length === scored.length && scored.length > 1) return null;
+  return { value: max, winners: winners.map((s) => s.m) };
+}
+
+function computeInsights(managers, elementLivePoints, baselineStandings, rankHistory, benchWarmerStreaks, elementLiveStats) {
   const motw = managerOfTheWeek(managers);
   const avg = averagePoints(managers);
   return {
@@ -740,6 +783,8 @@ function computeInsights(managers, elementLivePoints, baselineStandings, rankHis
     rankStreaks: rankStreaks(managers, rankHistory),
     mostConsistent: mostConsistent(managers),
     benchWarmer: longestSufferingBenchWarmer(benchWarmerStreaks, managers),
+    playerOfTheWeek: playerOfTheWeek(managers, elementLiveStats),
+    theWall: theWall(managers, elementLiveStats),
   };
 }
 
@@ -811,6 +856,8 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
     rankStreaks,
     mostConsistent,
     benchWarmer,
+    playerOfTheWeek,
+    theWall,
   } = insights;
 
   const headlines = [];
@@ -822,6 +869,10 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
   }
   if (avg != null) {
     headlines.push(`:bar_chart: *Average points:* ${Math.round(avg * 10) / 10}pts`);
+  }
+  if (playerOfTheWeek) {
+    const label = playerOfTheWeek.elements.map((e) => playerLabel(e, elementInfo)).join(', ');
+    headlines.push(`:soccer: *Player of the Week:* ${label} — ${playerOfTheWeek.value}pts`);
   }
   if (bench) {
     headlines.push(`:sob: *Bench Watch:* ${mentionList(bench.winners, mapping)} left ${bench.value}pts on the bench`);
@@ -837,6 +888,9 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
     headlines.push(
       `:zzz: *Longest-Suffering Bench Warmer:* ${playerLabel(w.element, elementInfo)} has warmed ${mention(w.m, mapping)}'s bench for ${benchWarmer.value} straight weeks`
     );
+  }
+  if (theWall) {
+    headlines.push(`:brick: *The Wall:* ${mentionList(theWall.winners, mapping)} — ${theWall.value} clean sheet${theWall.value === 1 ? '' : 's'} in the XI`);
   }
   group(headlines);
 
@@ -996,7 +1050,8 @@ async function main() {
   }
 
   console.error(`Fetching event/${gw}/live/ ...`);
-  const elementLivePoints = await fetchLiveGwPoints(gw);
+  const elementLiveStats = await fetchLiveGwStats(gw);
+  const elementLivePoints = new Map([...elementLiveStats].map(([id, s]) => [id, s.points]));
 
   const mapping = await loadManagerMapping();
 
@@ -1013,7 +1068,8 @@ async function main() {
     elementLivePoints,
     baseline?.standings ?? null,
     rankHistory,
-    benchWarmerStreaks
+    benchWarmerStreaks,
+    elementLiveStats
   );
   const blocks = buildBlocks({ leagueName, gw, insights, elementInfo, managerCount: managers.length, mapping });
 
