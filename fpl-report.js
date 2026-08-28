@@ -774,9 +774,15 @@ function formatPercent(count, total) {
   return Number.isInteger(rounded) ? `${rounded}%` : `${rounded.toFixed(1)}%`;
 }
 
+// Slack renders every section block with its own visual padding, so lines
+// are grouped into a single block per logical section (joined by newlines)
+// rather than one block per line — dividers still separate the groups.
 function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapping }) {
   const blocks = [];
   const section = (text) => blocks.push({ type: 'section', text: { type: 'mrkdwn', text } });
+  const group = (lines) => {
+    if (lines.length > 0) section(lines.join('\n'));
+  };
 
   blocks.push({
     type: 'header',
@@ -807,111 +813,115 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
     benchWarmer,
   } = insights;
 
+  const headlines = [];
   if (motw) {
-    section(`:first_place_medal: *Manager${motw.winners.length > 1 ? 's' : ''} of the Week:* ${mentionList(motw.winners, mapping)} — ${motw.value}pts :fire:`);
+    headlines.push(`:first_place_medal: *Manager${motw.winners.length > 1 ? 's' : ''} of the Week:* ${mentionList(motw.winners, mapping)} — ${motw.value}pts :fire:`);
   }
   if (ru) {
-    section(`:second_place_medal: *Runner${ru.winners.length > 1 ? 's' : ''} Up:* ${mentionList(ru.winners, mapping)} — ${ru.value}pts`);
+    headlines.push(`:second_place_medal: *Runner${ru.winners.length > 1 ? 's' : ''} Up:* ${mentionList(ru.winners, mapping)} — ${ru.value}pts`);
   }
   if (avg != null) {
-    section(`:bar_chart: *Average points:* ${Math.round(avg * 10) / 10}pts`);
+    headlines.push(`:bar_chart: *Average points:* ${Math.round(avg * 10) / 10}pts`);
   }
   if (bench) {
-    section(`:sob: *Bench Watch:* ${mentionList(bench.winners, mapping)} left ${bench.value}pts on the bench`);
+    headlines.push(`:sob: *Bench Watch:* ${mentionList(bench.winners, mapping)} left ${bench.value}pts on the bench`);
   }
   if (superSub) {
     const w = superSub.winners[0];
-    section(
+    headlines.push(
       `:muscle: *Super Sub:* ${mention(w.m, mapping)} — auto-sub ${playerLabel(w.elementIn, elementInfo)} in for ${playerLabel(w.elementOut, elementInfo)} gained +${superSub.value}pts`
     );
   }
   if (benchWarmer) {
     const w = benchWarmer.winners[0];
-    section(
+    headlines.push(
       `:zzz: *Longest-Suffering Bench Warmer:* ${playerLabel(w.element, elementInfo)} has warmed ${mention(w.m, mapping)}'s bench for ${benchWarmer.value} straight weeks`
     );
   }
+  group(headlines);
 
   blocks.push({ type: 'divider' });
-  section(':arrows_counterclockwise: *Transfers:*');
 
+  const transferLines = [':arrows_counterclockwise: *Transfers:*'];
   if (transfers.best) {
     const w = transfers.best.winners[0];
-    section(
+    transferLines.push(
       `:trophy: Best transfer this week: ${mention(w.m, mapping)} +${transfers.best.value.toFixed(1)} net pts (${playerLabel(w.elementIn, elementInfo)} in, ${playerLabel(w.elementOut, elementInfo)} out)`
     );
   }
   if (transfers.worst) {
     const w = transfers.worst.winners[0];
-    section(
+    transferLines.push(
       `:fire_extinguisher: Worst transfer this week: ${mention(w.m, mapping)} ${transfers.worst.value.toFixed(1)} net pts (${playerLabel(w.elementIn, elementInfo)} in, ${playerLabel(w.elementOut, elementInfo)} out)`
     );
   }
   if (!transfers.best && !transfers.worst) {
-    section(':shrug: No transfers made this gameweek.');
+    transferLines.push(':shrug: No transfers made this gameweek.');
   }
   if (transfersSeason) {
-    section(`:recycle: Most transfers this season: ${mentionList(transfersSeason.winners, mapping)} ${transfersSeason.value} transfers`);
+    transferLines.push(`:recycle: Most transfers this season: ${mentionList(transfersSeason.winners, mapping)} ${transfersSeason.value} transfers`);
   }
   if (teamValue) {
-    section(`:moneybag: Best Team Value: ${mentionList(teamValue.winners, mapping)} £${teamValue.value.toFixed(1)}m`);
+    transferLines.push(`:moneybag: Best Team Value: ${mentionList(teamValue.winners, mapping)} £${teamValue.value.toFixed(1)}m`);
   }
   if (freeHitRegret) {
     const w = freeHitRegret.winners[0];
-    section(
-      `:grimacing: *Hit Regret:* ${mention(w.m, mapping)} took a hit and still scored below average this week`
-    );
+    transferLines.push(`:grimacing: *Hit Regret:* ${mention(w.m, mapping)} took a hit and still scored below average this week`);
   }
+  group(transferLines);
 
+  const rankLines = [];
   if (!rm.hasBaseline) {
-    section(':chart_with_upwards_trend: _Rank movers: no baseline yet — will appear from next week\'s run._');
+    rankLines.push(':chart_with_upwards_trend: _Rank movers: no baseline yet — will appear from next week\'s run._');
   } else {
     if (rm.risers) {
-      section(`:arrow_up: *Biggest rank rise:* ${mentionList(rm.risers.winners, mapping)} — up ${rm.risers.value} place${rm.risers.value === 1 ? '' : 's'}`);
+      rankLines.push(`:arrow_up: *Biggest rank rise:* ${mentionList(rm.risers.winners, mapping)} — up ${rm.risers.value} place${rm.risers.value === 1 ? '' : 's'}`);
     }
     if (rm.fallers) {
-      section(`:arrow_down: *Biggest rank fall:* ${mentionList(rm.fallers.winners, mapping)} — down ${Math.abs(rm.fallers.value)} place${Math.abs(rm.fallers.value) === 1 ? '' : 's'}`);
+      rankLines.push(`:arrow_down: *Biggest rank fall:* ${mentionList(rm.fallers.winners, mapping)} — down ${Math.abs(rm.fallers.value)} place${Math.abs(rm.fallers.value) === 1 ? '' : 's'}`);
     }
   }
   if (rankStreaks.rising) {
-    section(`:chart_with_upwards_trend: *On the Rise:* ${mentionList(rankStreaks.rising.winners.map((s) => s.m), mapping)} — climbing for ${rankStreaks.rising.value} straight weeks`);
+    rankLines.push(`:chart_with_upwards_trend: *On the Rise:* ${mentionList(rankStreaks.rising.winners.map((s) => s.m), mapping)} — climbing for ${rankStreaks.rising.value} straight weeks`);
   }
   if (rankStreaks.falling) {
-    section(`:chart_with_downwards_trend: *In Freefall:* ${mentionList(rankStreaks.falling.winners.map((s) => s.m), mapping)} — falling for ${rankStreaks.falling.value} straight weeks`);
+    rankLines.push(`:chart_with_downwards_trend: *In Freefall:* ${mentionList(rankStreaks.falling.winners.map((s) => s.m), mapping)} — falling for ${rankStreaks.falling.value} straight weeks`);
   }
   if (mostConsistent) {
-    section(`:scales: *Most Consistent:* ${mentionList(mostConsistent.winners.map((c) => c.m), mapping)} — score std-dev ${mostConsistent.value.toFixed(1)}`);
+    rankLines.push(`:scales: *Most Consistent:* ${mentionList(mostConsistent.winners.map((c) => c.m), mapping)} — score std-dev ${mostConsistent.value.toFixed(1)}`);
   }
+  group(rankLines);
 
   blocks.push({ type: 'divider' });
-  section(':star: *Player Highlights*');
 
+  const highlightLines = [':star: *Player Highlights*'];
   if (captained) {
     const label = captained.elements.map((e) => playerLabel(e, elementInfo)).join(', ');
-    section(`:dart: Most captained: ${label} - ${formatPercent(captained.value, managerCount)} (${captained.value}/${managerCount})`);
+    highlightLines.push(`:dart: Most captained: ${label} - ${formatPercent(captained.value, managerCount)} (${captained.value}/${managerCount})`);
   }
   if (owned) {
     const label = owned.elements.map((e) => playerLabel(e, elementInfo)).join(', ');
-    section(`:purple_heart: Most owned: ${label} - ${formatPercent(owned.value, managerCount)} (${owned.value}/${managerCount})`);
+    highlightLines.push(`:purple_heart: Most owned: ${label} - ${formatPercent(owned.value, managerCount)} (${owned.value}/${managerCount})`);
   }
   if (transferredIn) {
-    section(`:+1: Most transferred in: ${transferredIn.elements.map((e) => playerLabel(e, elementInfo)).join(', ')} (${transferredIn.value})`);
+    highlightLines.push(`:+1: Most transferred in: ${transferredIn.elements.map((e) => playerLabel(e, elementInfo)).join(', ')} (${transferredIn.value})`);
   }
   if (transferredOut) {
-    section(`:-1: Most transferred out: ${transferredOut.elements.map((e) => playerLabel(e, elementInfo)).join(', ')} (${transferredOut.value})`);
+    highlightLines.push(`:-1: Most transferred out: ${transferredOut.elements.map((e) => playerLabel(e, elementInfo)).join(', ')} (${transferredOut.value})`);
   }
   if (differentialCaptain) {
     const w = differentialCaptain.winners[0];
-    section(
+    highlightLines.push(
       `:gem: Differential Captain: ${mention(w.m, mapping)} — ${playerLabel(w.element, elementInfo)} (${formatPercent(w.ownershipCount, managerCount)} owned) banked ${differentialCaptain.value}pts`
     );
   }
   if (teamTwins && teamTwins.diff <= 2) {
     const [a, b] = teamTwins.pair;
-    section(
+    highlightLines.push(
       `:busts_in_silhouette: Team Twins: ${mention(a, mapping)} & ${mention(b, mapping)} — squads differ by just ${teamTwins.diff} player${teamTwins.diff === 1 ? '' : 's'}`
     );
   }
+  group(highlightLines);
 
   return blocks;
 }
