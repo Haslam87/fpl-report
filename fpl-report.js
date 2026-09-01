@@ -78,6 +78,13 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+class FplHttpError extends Error {
+  constructor(status, path, body) {
+    super(`FPL API returned ${status} for ${path}. Body: ${body.slice(0, 300)}`);
+    this.status = status;
+  }
+}
+
 async function fplGet(path, { retries = 3 } = {}) {
   const url = BASE_URL + path;
   let lastErr;
@@ -104,7 +111,7 @@ async function fplGet(path, { retries = 3 } = {}) {
     const bodyText = await res.text();
 
     if (!res.ok) {
-      throw new Error(`FPL API returned ${res.status} for ${path}. Body: ${bodyText.slice(0, 300)}`);
+      throw new FplHttpError(res.status, path, bodyText);
     }
     if (!contentType.includes('application/json')) {
       throw new Error(
@@ -243,9 +250,20 @@ async function fetchLiveGwStats(gw) {
   return stats;
 }
 
+// Returns null when the manager hadn't joined yet for this gameweek (the
+// picks endpoint 404s for entries that started later than `gw` — e.g. a
+// manager who joined the mini-league mid-season). Any other failure still
+// throws, since that's a real API problem rather than an expected absence.
 async function fetchManagerData(entryId, gw, limit) {
-  const [picks, transfers, history] = await Promise.all([
-    limit(() => fplGet(`entry/${entryId}/event/${gw}/picks/`)),
+  let picks;
+  try {
+    picks = await limit(() => fplGet(`entry/${entryId}/event/${gw}/picks/`));
+  } catch (err) {
+    if (err instanceof FplHttpError && err.status === 404) return null;
+    throw err;
+  }
+
+  const [transfers, history] = await Promise.all([
     limit(() => fplGet(`entry/${entryId}/transfers/`)),
     limit(() => fplGet(`entry/${entryId}/history/`)),
   ]);
@@ -286,9 +304,10 @@ async function collectLeagueData(leagueId, gw) {
   const { leagueName, entries } = await fetchLeagueStandings(leagueId);
   const limit = createLimiter(6);
 
-  const managers = await Promise.all(
+  const results = await Promise.all(
     entries.map(async (entry) => {
       const detail = await fetchManagerData(entry.entry, gw, limit);
+      if (detail == null) return null; // hadn't joined yet as of this gameweek
       const eh = detail.entryHistory;
       return {
         entry: entry.entry,
@@ -313,6 +332,12 @@ async function collectLeagueData(leagueId, gw) {
       };
     })
   );
+
+  const managers = results.filter((m) => m != null);
+  const skipped = results.length - managers.length;
+  if (skipped > 0) {
+    console.error(`Skipped ${skipped} manager(s) who joined the league after gameweek ${gw}`);
+  }
 
   return { leagueName, managers };
 }
