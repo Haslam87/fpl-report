@@ -8,11 +8,13 @@ on:
         required: false
         type: string
   schedule:
-    # Tuesday 09:00 UTC — after Monday night fixtures and bonus-point
+    # Tuesday ~09:07 UTC — after Monday night fixtures and bonus-point
     # confirmation. GitHub cron runs in UTC (drifts against BST during the
-    # season) and scheduled runs can be delayed under GitHub Actions load,
-    # so treat this as "roughly Tuesday morning", not exact.
-    - cron: "0 9 * * 2"
+    # season, so this lands ~10:07 local during BST). Off-the-hour minute
+    # deliberately avoids GitHub's documented top-of-the-hour scheduler
+    # congestion; scheduled runs can still be delayed under load, so treat
+    # this as "roughly Tuesday morning", not exact.
+    - cron: "7 9 * * 2"
 
 permissions:
   contents: write
