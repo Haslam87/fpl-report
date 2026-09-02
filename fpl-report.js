@@ -915,7 +915,7 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
     );
   }
   if (theWall) {
-    headlines.push(`:brick: *The Wall:* ${mentionList(theWall.winners, mapping)} — ${theWall.value} clean sheet${theWall.value === 1 ? '' : 's'} in the XI`);
+    headlines.push(`:bricks: *The Wall:* ${mentionList(theWall.winners, mapping)} — ${theWall.value} clean sheet${theWall.value === 1 ? '' : 's'} in the XI`);
   }
   group(headlines);
 
