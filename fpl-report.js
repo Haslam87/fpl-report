@@ -967,7 +967,7 @@ function buildBlocks({ leagueName, gw, insights, elementInfo, managerCount, mapp
     rankLines.push(`:chart_with_downwards_trend: *In Freefall:* ${mentionList(rankStreaks.falling.winners.map((s) => s.m), mapping)} — falling for ${rankStreaks.falling.value} straight weeks`);
   }
   if (mostConsistent) {
-    rankLines.push(`:scales: *Most Consistent:* ${mentionList(mostConsistent.winners.map((c) => c.m), mapping)} — score std-dev ${mostConsistent.value.toFixed(1)}`);
+    rankLines.push(`:scales: *Most Consistent:* ${mentionList(mostConsistent.winners.map((c) => c.m), mapping)} — scores within ±${mostConsistent.value.toFixed(1)}pts of their average all season`);
   }
   group(rankLines);
 
