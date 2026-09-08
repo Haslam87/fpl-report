@@ -1,5 +1,251 @@
 {
   "current": {
+    "gameweek": 3,
+    "generatedAt": "2026-09-08T07:22:59.502Z",
+    "standings": {
+      "211964": {
+        "rank": 3,
+        "total": 219,
+        "playerName": "Mark Haslam"
+      },
+      "737445": {
+        "rank": 4,
+        "total": 218,
+        "playerName": "Yang Zhao"
+      },
+      "782298": {
+        "rank": 5,
+        "total": 217,
+        "playerName": "Tom Eshelby"
+      },
+      "986200": {
+        "rank": 23,
+        "total": 201,
+        "playerName": "Michael Lake"
+      },
+      "1296714": {
+        "rank": 41,
+        "total": 158,
+        "playerName": "Vithurshan Canathas"
+      },
+      "1547189": {
+        "rank": 2,
+        "total": 232,
+        "playerName": "Daniel Mukhtar"
+      },
+      "1576257": {
+        "rank": 36,
+        "total": 176,
+        "playerName": "Dom Chiu"
+      },
+      "1806004": {
+        "rank": 20,
+        "total": 202,
+        "playerName": "Thomas Harper"
+      },
+      "1814199": {
+        "rank": 29,
+        "total": 195,
+        "playerName": "Jan Piedrahita"
+      },
+      "1884325": {
+        "rank": 1,
+        "total": 244,
+        "playerName": "Ryan Burchell"
+      },
+      "1895411": {
+        "rank": 12,
+        "total": 209,
+        "playerName": "Chris Yannakakis"
+      },
+      "2382016": {
+        "rank": 38,
+        "total": 170,
+        "playerName": "Xerxes Panthakee"
+      },
+      "2385082": {
+        "rank": 34,
+        "total": 180,
+        "playerName": "Carlos Byrne"
+      },
+      "2703964": {
+        "rank": 28,
+        "total": 196,
+        "playerName": "Ayan Sengupta"
+      },
+      "2835044": {
+        "rank": 13,
+        "total": 208,
+        "playerName": "Andrew Moses"
+      },
+      "2998340": {
+        "rank": 37,
+        "total": 174,
+        "playerName": "Robert George"
+      },
+      "3081624": {
+        "rank": 40,
+        "total": 162,
+        "playerName": "Ciaran Grimes"
+      },
+      "3113940": {
+        "rank": 43,
+        "total": 156,
+        "playerName": "Luke Bond"
+      },
+      "3390954": {
+        "rank": 17,
+        "total": 205,
+        "playerName": "Sandipan Bose"
+      },
+      "3456681": {
+        "rank": 10,
+        "total": 213,
+        "playerName": "Josh Wong"
+      },
+      "3653264": {
+        "rank": 10,
+        "total": 213,
+        "playerName": "Jessica Galletley"
+      },
+      "3689299": {
+        "rank": 13,
+        "total": 208,
+        "playerName": "Zach Molony"
+      },
+      "3817379": {
+        "rank": 39,
+        "total": 167,
+        "playerName": "Charlie Brown"
+      },
+      "4414293": {
+        "rank": 33,
+        "total": 182,
+        "playerName": "George Simpson"
+      },
+      "4503546": {
+        "rank": 46,
+        "total": 147,
+        "playerName": "Jordan Olney"
+      },
+      "4617748": {
+        "rank": 26,
+        "total": 198,
+        "playerName": "Matt Kemp"
+      },
+      "5166210": {
+        "rank": 45,
+        "total": 153,
+        "playerName": "Samuel David Akinrinwa"
+      },
+      "5221159": {
+        "rank": 22,
+        "total": 201,
+        "playerName": "Jeremy Kay"
+      },
+      "5508573": {
+        "rank": 8,
+        "total": 215,
+        "playerName": "Louis Abbott"
+      },
+      "5741115": {
+        "rank": 25,
+        "total": 198,
+        "playerName": "Giorgio Fiumefreddo"
+      },
+      "6069302": {
+        "rank": 9,
+        "total": 214,
+        "playerName": "Jack Williams"
+      },
+      "6085721": {
+        "rank": 44,
+        "total": 153,
+        "playerName": "Brett Kennedy"
+      },
+      "6291766": {
+        "rank": 47,
+        "total": 127,
+        "playerName": "Christian Stern"
+      },
+      "6712985": {
+        "rank": 31,
+        "total": 189,
+        "playerName": "Emma Coles"
+      },
+      "6717668": {
+        "rank": 35,
+        "total": 177,
+        "playerName": "Rob Stratton"
+      },
+      "6743610": {
+        "rank": 5,
+        "total": 217,
+        "playerName": "Josh Cottrell"
+      },
+      "7295221": {
+        "rank": 24,
+        "total": 198,
+        "playerName": "Shane McMullan"
+      },
+      "7300661": {
+        "rank": 20,
+        "total": 202,
+        "playerName": "Jack Hurst"
+      },
+      "7697961": {
+        "rank": 29,
+        "total": 195,
+        "playerName": "Bart Biernat"
+      },
+      "7773147": {
+        "rank": 7,
+        "total": 216,
+        "playerName": "Oscar Fowler"
+      },
+      "7896652": {
+        "rank": 13,
+        "total": 208,
+        "playerName": "Abby Debell"
+      },
+      "7942521": {
+        "rank": 18,
+        "total": 203,
+        "playerName": "Jess Riley"
+      },
+      "7978863": {
+        "rank": 16,
+        "total": 207,
+        "playerName": "samuel evatt"
+      },
+      "8039556": {
+        "rank": 42,
+        "total": 157,
+        "playerName": "Katie Quaite"
+      },
+      "8281881": {
+        "rank": 27,
+        "total": 196,
+        "playerName": "Alex Spring"
+      },
+      "8603104": {
+        "rank": 19,
+        "total": 202,
+        "playerName": "Martin Allison"
+      },
+      "8679852": {
+        "rank": 32,
+        "total": 187,
+        "playerName": "Shabab Mahmood"
+      },
+      "8921770": {
+        "rank": 48,
+        "total": 112,
+        "playerName": "Richard Onsiong"
+      }
+    }
+  },
+  "previous": {
     "gameweek": 2,
     "generatedAt": "2026-09-02T11:17:59.518Z",
     "standings": {
@@ -245,237 +491,6 @@
       }
     }
   },
-  "previous": {
-    "gameweek": 1,
-    "generatedAt": "2026-08-27T08:42:12.210Z",
-    "standings": {
-      "211964": {
-        "rank": 29,
-        "total": 52,
-        "playerName": "Mark Haslam"
-      },
-      "737445": {
-        "rank": 10,
-        "total": 61,
-        "playerName": "Lewis Zhao"
-      },
-      "782298": {
-        "rank": 11,
-        "total": 60,
-        "playerName": "Tom Eshelby"
-      },
-      "986200": {
-        "rank": 20,
-        "total": 55,
-        "playerName": "Michael Lake"
-      },
-      "1296714": {
-        "rank": 43,
-        "total": 37,
-        "playerName": "Vithurshan Canathas"
-      },
-      "1547189": {
-        "rank": 4,
-        "total": 68,
-        "playerName": "Daniel Mukhtar"
-      },
-      "1576257": {
-        "rank": 37,
-        "total": 46,
-        "playerName": "Dom Chiu"
-      },
-      "1806004": {
-        "rank": 13,
-        "total": 59,
-        "playerName": "Thomas Harper"
-      },
-      "1814199": {
-        "rank": 6,
-        "total": 66,
-        "playerName": "Jan Piedrahita"
-      },
-      "1884325": {
-        "rank": 1,
-        "total": 95,
-        "playerName": "Ryan Burchell"
-      },
-      "1895411": {
-        "rank": 5,
-        "total": 67,
-        "playerName": "Chris Yannakakis"
-      },
-      "2382016": {
-        "rank": 26,
-        "total": 53,
-        "playerName": "Xerxes Panthakee"
-      },
-      "2385082": {
-        "rank": 37,
-        "total": 46,
-        "playerName": "Carlos Byrne"
-      },
-      "2703964": {
-        "rank": 37,
-        "total": 46,
-        "playerName": "Ayan Sengupta"
-      },
-      "2835044": {
-        "rank": 13,
-        "total": 59,
-        "playerName": "Andrew Moses"
-      },
-      "2998340": {
-        "rank": 20,
-        "total": 55,
-        "playerName": "Robert George"
-      },
-      "3081624": {
-        "rank": 19,
-        "total": 56,
-        "playerName": "Ciaran Grimes"
-      },
-      "3113940": {
-        "rank": 42,
-        "total": 42,
-        "playerName": "Luke Bond"
-      },
-      "3390954": {
-        "rank": 26,
-        "total": 53,
-        "playerName": "Sandipan Bose"
-      },
-      "3456681": {
-        "rank": 26,
-        "total": 53,
-        "playerName": "Josh Wong"
-      },
-      "3689299": {
-        "rank": 17,
-        "total": 57,
-        "playerName": "Zach Molony"
-      },
-      "3817379": {
-        "rank": 24,
-        "total": 54,
-        "playerName": "Charlie Brown"
-      },
-      "4414293": {
-        "rank": 20,
-        "total": 55,
-        "playerName": "George Simpson"
-      },
-      "4503546": {
-        "rank": 37,
-        "total": 46,
-        "playerName": "Jordan Olney"
-      },
-      "4617748": {
-        "rank": 3,
-        "total": 69,
-        "playerName": "Matt Kemp"
-      },
-      "5166210": {
-        "rank": 7,
-        "total": 65,
-        "playerName": "Samuel David Akinrinwa"
-      },
-      "5221159": {
-        "rank": 37,
-        "total": 46,
-        "playerName": "Jeremy Kay"
-      },
-      "5508573": {
-        "rank": 8,
-        "total": 62,
-        "playerName": "Louis Abbott"
-      },
-      "5741115": {
-        "rank": 36,
-        "total": 47,
-        "playerName": "Giorgio Fiumefreddo"
-      },
-      "6069302": {
-        "rank": 2,
-        "total": 70,
-        "playerName": "Jack Williams"
-      },
-      "6085721": {
-        "rank": 44,
-        "total": 27,
-        "playerName": "Brett Kennedy"
-      },
-      "6291766": {
-        "rank": 45,
-        "total": 22,
-        "playerName": "Christian Stern"
-      },
-      "6712985": {
-        "rank": 17,
-        "total": 57,
-        "playerName": "Emma Coles"
-      },
-      "6717668": {
-        "rank": 24,
-        "total": 54,
-        "playerName": "Rob Stratton"
-      },
-      "6743610": {
-        "rank": 13,
-        "total": 59,
-        "playerName": "Josh Cottrell"
-      },
-      "7295221": {
-        "rank": 11,
-        "total": 60,
-        "playerName": "Shane McMullan"
-      },
-      "7300661": {
-        "rank": 13,
-        "total": 59,
-        "playerName": "Jack Hurst"
-      },
-      "7697961": {
-        "rank": 20,
-        "total": 55,
-        "playerName": "Bart Biernat"
-      },
-      "7773147": {
-        "rank": 29,
-        "total": 52,
-        "playerName": "Oscar Fowler"
-      },
-      "7896652": {
-        "rank": 8,
-        "total": 62,
-        "playerName": "Abby Debell"
-      },
-      "7978863": {
-        "rank": 33,
-        "total": 49,
-        "playerName": "samuel evatt"
-      },
-      "8039556": {
-        "rank": 33,
-        "total": 49,
-        "playerName": "Katie Quaite"
-      },
-      "8281881": {
-        "rank": 33,
-        "total": 49,
-        "playerName": "Alex Spring"
-      },
-      "8603104": {
-        "rank": 32,
-        "total": 50,
-        "playerName": "Martin Allison"
-      },
-      "8679852": {
-        "rank": 31,
-        "total": 51,
-        "playerName": "Shabab Mahmood"
-      }
-    }
-  },
   "rankHistory": {
     "211964": [
       {
@@ -485,6 +500,10 @@
       {
         "gameweek": 2,
         "rank": 10
+      },
+      {
+        "gameweek": 3,
+        "rank": 3
       }
     ],
     "737445": [
@@ -494,6 +513,10 @@
       },
       {
         "gameweek": 2,
+        "rank": 4
+      },
+      {
+        "gameweek": 3,
         "rank": 4
       }
     ],
@@ -505,6 +528,10 @@
       {
         "gameweek": 2,
         "rank": 7
+      },
+      {
+        "gameweek": 3,
+        "rank": 5
       }
     ],
     "986200": [
@@ -515,6 +542,10 @@
       {
         "gameweek": 2,
         "rank": 6
+      },
+      {
+        "gameweek": 3,
+        "rank": 23
       }
     ],
     "1296714": [
@@ -525,6 +556,10 @@
       {
         "gameweek": 2,
         "rank": 44
+      },
+      {
+        "gameweek": 3,
+        "rank": 41
       }
     ],
     "1547189": [
@@ -535,6 +570,10 @@
       {
         "gameweek": 2,
         "rank": 1
+      },
+      {
+        "gameweek": 3,
+        "rank": 2
       }
     ],
     "1576257": [
@@ -545,6 +584,10 @@
       {
         "gameweek": 2,
         "rank": 40
+      },
+      {
+        "gameweek": 3,
+        "rank": 36
       }
     ],
     "1806004": [
@@ -555,6 +598,10 @@
       {
         "gameweek": 2,
         "rank": 34
+      },
+      {
+        "gameweek": 3,
+        "rank": 20
       }
     ],
     "1814199": [
@@ -565,6 +612,10 @@
       {
         "gameweek": 2,
         "rank": 36
+      },
+      {
+        "gameweek": 3,
+        "rank": 29
       }
     ],
     "1884325": [
@@ -575,6 +626,10 @@
       {
         "gameweek": 2,
         "rank": 2
+      },
+      {
+        "gameweek": 3,
+        "rank": 1
       }
     ],
     "1895411": [
@@ -585,6 +640,10 @@
       {
         "gameweek": 2,
         "rank": 15
+      },
+      {
+        "gameweek": 3,
+        "rank": 12
       }
     ],
     "2382016": [
@@ -595,6 +654,10 @@
       {
         "gameweek": 2,
         "rank": 37
+      },
+      {
+        "gameweek": 3,
+        "rank": 38
       }
     ],
     "2385082": [
@@ -605,6 +668,10 @@
       {
         "gameweek": 2,
         "rank": 38
+      },
+      {
+        "gameweek": 3,
+        "rank": 34
       }
     ],
     "2703964": [
@@ -615,6 +682,10 @@
       {
         "gameweek": 2,
         "rank": 24
+      },
+      {
+        "gameweek": 3,
+        "rank": 28
       }
     ],
     "2835044": [
@@ -625,6 +696,10 @@
       {
         "gameweek": 2,
         "rank": 15
+      },
+      {
+        "gameweek": 3,
+        "rank": 13
       }
     ],
     "2998340": [
@@ -635,6 +710,10 @@
       {
         "gameweek": 2,
         "rank": 38
+      },
+      {
+        "gameweek": 3,
+        "rank": 37
       }
     ],
     "3081624": [
@@ -645,6 +724,10 @@
       {
         "gameweek": 2,
         "rank": 28
+      },
+      {
+        "gameweek": 3,
+        "rank": 40
       }
     ],
     "3113940": [
@@ -654,6 +737,10 @@
       },
       {
         "gameweek": 2,
+        "rank": 43
+      },
+      {
+        "gameweek": 3,
         "rank": 43
       }
     ],
@@ -665,6 +752,10 @@
       {
         "gameweek": 2,
         "rank": 13
+      },
+      {
+        "gameweek": 3,
+        "rank": 17
       }
     ],
     "3456681": [
@@ -675,12 +766,20 @@
       {
         "gameweek": 2,
         "rank": 14
+      },
+      {
+        "gameweek": 3,
+        "rank": 10
       }
     ],
     "3653264": [
       {
         "gameweek": 2,
         "rank": 11
+      },
+      {
+        "gameweek": 3,
+        "rank": 10
       }
     ],
     "3689299": [
@@ -691,6 +790,10 @@
       {
         "gameweek": 2,
         "rank": 5
+      },
+      {
+        "gameweek": 3,
+        "rank": 13
       }
     ],
     "3817379": [
@@ -701,6 +804,10 @@
       {
         "gameweek": 2,
         "rank": 35
+      },
+      {
+        "gameweek": 3,
+        "rank": 39
       }
     ],
     "4414293": [
@@ -711,6 +818,10 @@
       {
         "gameweek": 2,
         "rank": 31
+      },
+      {
+        "gameweek": 3,
+        "rank": 33
       }
     ],
     "4503546": [
@@ -721,6 +832,10 @@
       {
         "gameweek": 2,
         "rank": 42
+      },
+      {
+        "gameweek": 3,
+        "rank": 46
       }
     ],
     "4617748": [
@@ -731,6 +846,10 @@
       {
         "gameweek": 2,
         "rank": 27
+      },
+      {
+        "gameweek": 3,
+        "rank": 26
       }
     ],
     "5166210": [
@@ -741,6 +860,10 @@
       {
         "gameweek": 2,
         "rank": 32
+      },
+      {
+        "gameweek": 3,
+        "rank": 45
       }
     ],
     "5221159": [
@@ -751,6 +874,10 @@
       {
         "gameweek": 2,
         "rank": 23
+      },
+      {
+        "gameweek": 3,
+        "rank": 22
       }
     ],
     "5508573": [
@@ -761,6 +888,10 @@
       {
         "gameweek": 2,
         "rank": 20
+      },
+      {
+        "gameweek": 3,
+        "rank": 8
       }
     ],
     "5741115": [
@@ -770,6 +901,10 @@
       },
       {
         "gameweek": 2,
+        "rank": 25
+      },
+      {
+        "gameweek": 3,
         "rank": 25
       }
     ],
@@ -781,6 +916,10 @@
       {
         "gameweek": 2,
         "rank": 3
+      },
+      {
+        "gameweek": 3,
+        "rank": 9
       }
     ],
     "6085721": [
@@ -791,6 +930,10 @@
       {
         "gameweek": 2,
         "rank": 46
+      },
+      {
+        "gameweek": 3,
+        "rank": 44
       }
     ],
     "6291766": [
@@ -800,6 +943,10 @@
       },
       {
         "gameweek": 2,
+        "rank": 47
+      },
+      {
+        "gameweek": 3,
         "rank": 47
       }
     ],
@@ -811,6 +958,10 @@
       {
         "gameweek": 2,
         "rank": 26
+      },
+      {
+        "gameweek": 3,
+        "rank": 31
       }
     ],
     "6717668": [
@@ -821,6 +972,10 @@
       {
         "gameweek": 2,
         "rank": 33
+      },
+      {
+        "gameweek": 3,
+        "rank": 35
       }
     ],
     "6743610": [
@@ -831,6 +986,10 @@
       {
         "gameweek": 2,
         "rank": 7
+      },
+      {
+        "gameweek": 3,
+        "rank": 5
       }
     ],
     "7295221": [
@@ -841,6 +1000,10 @@
       {
         "gameweek": 2,
         "rank": 20
+      },
+      {
+        "gameweek": 3,
+        "rank": 24
       }
     ],
     "7300661": [
@@ -851,6 +1014,10 @@
       {
         "gameweek": 2,
         "rank": 22
+      },
+      {
+        "gameweek": 3,
+        "rank": 20
       }
     ],
     "7697961": [
@@ -861,6 +1028,10 @@
       {
         "gameweek": 2,
         "rank": 12
+      },
+      {
+        "gameweek": 3,
+        "rank": 29
       }
     ],
     "7773147": [
@@ -871,6 +1042,10 @@
       {
         "gameweek": 2,
         "rank": 18
+      },
+      {
+        "gameweek": 3,
+        "rank": 7
       }
     ],
     "7896652": [
@@ -881,12 +1056,20 @@
       {
         "gameweek": 2,
         "rank": 7
+      },
+      {
+        "gameweek": 3,
+        "rank": 13
       }
     ],
     "7942521": [
       {
         "gameweek": 2,
         "rank": 17
+      },
+      {
+        "gameweek": 3,
+        "rank": 18
       }
     ],
     "7978863": [
@@ -897,6 +1080,10 @@
       {
         "gameweek": 2,
         "rank": 29
+      },
+      {
+        "gameweek": 3,
+        "rank": 16
       }
     ],
     "8039556": [
@@ -907,6 +1094,10 @@
       {
         "gameweek": 2,
         "rank": 45
+      },
+      {
+        "gameweek": 3,
+        "rank": 42
       }
     ],
     "8281881": [
@@ -917,6 +1108,10 @@
       {
         "gameweek": 2,
         "rank": 30
+      },
+      {
+        "gameweek": 3,
+        "rank": 27
       }
     ],
     "8603104": [
@@ -927,6 +1122,10 @@
       {
         "gameweek": 2,
         "rank": 18
+      },
+      {
+        "gameweek": 3,
+        "rank": 19
       }
     ],
     "8679852": [
@@ -937,1247 +1136,1367 @@
       {
         "gameweek": 2,
         "rank": 41
+      },
+      {
+        "gameweek": 3,
+        "rank": 32
       }
     ],
     "8921770": [
       {
         "gameweek": 2,
         "rank": 48
+      },
+      {
+        "gameweek": 3,
+        "rank": 48
       }
     ]
   },
   "benchWarmerStreaks": {
-    "1547189:109": {
-      "entry": 1547189,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1547189:124": {
-      "entry": 1547189,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1547189:534": {
-      "entry": 1547189,
-      "element": 534,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1547189:304": {
-      "entry": 1547189,
-      "element": 304,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
     "1884325:496": {
       "entry": 1884325,
       "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
-    "1884325:237": {
+    "1884325:165": {
       "entry": 1884325,
-      "element": 237,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 165,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "1884325:418": {
       "entry": 1884325,
       "element": 418,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "1884325:334": {
       "entry": 1884325,
       "element": 334,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "1547189:496": {
+      "entry": 1547189,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "6069302:109": {
-      "entry": 6069302,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "1547189:565": {
+      "entry": 1547189,
+      "element": 565,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "6069302:552": {
-      "entry": 6069302,
-      "element": 552,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "6069302:534": {
-      "entry": 6069302,
+    "1547189:534": {
+      "entry": 1547189,
       "element": 534,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "6069302:237": {
-      "entry": 6069302,
-      "element": 237,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "737445:109": {
-      "entry": 737445,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "737445:124": {
-      "entry": 737445,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "737445:532": {
-      "entry": 737445,
-      "element": 532,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "737445:304": {
-      "entry": 737445,
+    "1547189:304": {
+      "entry": 1547189,
       "element": 304,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "3689299:496": {
-      "entry": 3689299,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3689299:532": {
-      "entry": 3689299,
-      "element": 532,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3689299:346": {
-      "entry": 3689299,
-      "element": 346,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3689299:259": {
-      "entry": 3689299,
-      "element": 259,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "782298:109": {
-      "entry": 782298,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "782298:124": {
-      "entry": 782298,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "782298:305": {
-      "entry": 782298,
-      "element": 305,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "782298:204": {
-      "entry": 782298,
-      "element": 204,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "6743610:111": {
-      "entry": 6743610,
-      "element": 111,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6743610:175": {
-      "entry": 6743610,
-      "element": 175,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6743610:127": {
-      "entry": 6743610,
-      "element": 127,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6743610:272": {
-      "entry": 6743610,
-      "element": 272,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7896652:496": {
-      "entry": 7896652,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7896652:304": {
-      "entry": 7896652,
-      "element": 304,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7896652:124": {
-      "entry": 7896652,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7896652:346": {
-      "entry": 7896652,
-      "element": 346,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
     "211964:497": {
       "entry": 211964,
       "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "211964:11": {
       "entry": 211964,
       "element": 11,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "211964:175": {
-      "entry": 211964,
-      "element": 175,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
     "211964:212": {
       "entry": 211964,
       "element": 212,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "3653264:497": {
-      "entry": 3653264,
-      "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3653264:469": {
-      "entry": 3653264,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3653264:212": {
-      "entry": 3653264,
-      "element": 212,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3653264:305": {
-      "entry": 3653264,
-      "element": 305,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "7697961:109": {
-      "entry": 7697961,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "7697961:101": {
-      "entry": 7697961,
-      "element": 101,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7697961:116": {
-      "entry": 7697961,
-      "element": 116,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "7697961:175": {
-      "entry": 7697961,
+    "211964:175": {
+      "entry": 211964,
       "element": 175,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "1895411:109": {
-      "entry": 1895411,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "737445:496": {
+      "entry": 737445,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "1895411:305": {
-      "entry": 1895411,
-      "element": 305,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1895411:469": {
-      "entry": 1895411,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1895411:346": {
-      "entry": 1895411,
+    "737445:346": {
+      "entry": 737445,
       "element": 346,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "2835044:496": {
-      "entry": 2835044,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "737445:532": {
+      "entry": 737445,
+      "element": 532,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "737445:304": {
+      "entry": 737445,
+      "element": 304,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "782298:58": {
+      "entry": 782298,
+      "element": 58,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "2835044:480": {
-      "entry": 2835044,
-      "element": 480,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "782298:471": {
+      "entry": 782298,
+      "element": 471,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "2835044:175": {
-      "entry": 2835044,
-      "element": 175,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "2835044:305": {
-      "entry": 2835044,
+    "782298:305": {
+      "entry": 782298,
       "element": 305,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "7942521:496": {
-      "entry": 7942521,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "782298:321": {
+      "entry": 782298,
+      "element": 321,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "7942521:201": {
-      "entry": 7942521,
-      "element": 201,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "6743610:111": {
+      "entry": 6743610,
+      "element": 111,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6743610:175": {
+      "entry": 6743610,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6743610:11": {
+      "entry": 6743610,
+      "element": 11,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "7942521:45": {
-      "entry": 7942521,
-      "element": 45,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "7942521:112": {
-      "entry": 7942521,
-      "element": 112,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+    "6743610:272": {
+      "entry": 6743610,
+      "element": 272,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "7773147:497": {
       "entry": 7773147,
       "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7773147:626": {
+      "entry": 7773147,
+      "element": 626,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7773147:609": {
+      "entry": 7773147,
+      "element": 609,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "7773147:539": {
       "entry": 7773147,
       "element": 539,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "7773147:112": {
-      "entry": 7773147,
-      "element": 112,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7773147:127": {
-      "entry": 7773147,
-      "element": 127,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "8603104:109": {
-      "entry": 8603104,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "8603104:173": {
-      "entry": 8603104,
-      "element": 173,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "8603104:124": {
-      "entry": 8603104,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "8603104:204": {
-      "entry": 8603104,
-      "element": 204,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
     "5508573:111": {
       "entry": 5508573,
       "element": 111,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "5508573:539": {
-      "entry": 5508573,
-      "element": 539,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "5508573:323": {
       "entry": 5508573,
       "element": 323,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "5508573:539": {
+      "entry": 5508573,
+      "element": 539,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "5508573:272": {
       "entry": 5508573,
       "element": 272,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6069302:58": {
+      "entry": 6069302,
+      "element": 58,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "6069302:40": {
+      "entry": 6069302,
+      "element": 40,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "6069302:31": {
+      "entry": 6069302,
+      "element": 31,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "6069302:279": {
+      "entry": 6069302,
+      "element": 279,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3456681:57": {
+      "entry": 3456681,
+      "element": 57,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3456681:249": {
+      "entry": 3456681,
+      "element": 249,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3456681:418": {
+      "entry": 3456681,
+      "element": 418,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3456681:175": {
+      "entry": 3456681,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3653264:1": {
+      "entry": 3653264,
+      "element": 1,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3653264:469": {
+      "entry": 3653264,
+      "element": 469,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "7295221:301": {
-      "entry": 7295221,
-      "element": 301,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "3653264:305": {
+      "entry": 3653264,
+      "element": 305,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "7295221:259": {
-      "entry": 7295221,
-      "element": 259,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7295221:212": {
-      "entry": 7295221,
+    "3653264:212": {
+      "entry": 3653264,
       "element": 212,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "7295221:423": {
-      "entry": 7295221,
-      "element": 423,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "1895411:572": {
+      "entry": 1895411,
+      "element": 572,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1895411:8": {
+      "entry": 1895411,
+      "element": 8,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1895411:346": {
+      "entry": 1895411,
+      "element": 346,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
+    },
+    "1895411:305": {
+      "entry": 1895411,
+      "element": 305,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7896652:496": {
+      "entry": 7896652,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7896652:304": {
+      "entry": 7896652,
+      "element": 304,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7896652:124": {
+      "entry": 7896652,
+      "element": 124,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7896652:346": {
+      "entry": 7896652,
+      "element": 346,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2835044:496": {
+      "entry": 2835044,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "2835044:557": {
+      "entry": 2835044,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "2835044:175": {
+      "entry": 2835044,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2835044:305": {
+      "entry": 2835044,
+      "element": 305,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "3689299:497": {
+      "entry": 3689299,
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3689299:165": {
+      "entry": 3689299,
+      "element": 165,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3689299:154": {
+      "entry": 3689299,
+      "element": 154,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3689299:31": {
+      "entry": 3689299,
+      "element": 31,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7978863:497": {
+      "entry": 7978863,
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7978863:306": {
+      "entry": 7978863,
+      "element": 306,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7978863:212": {
+      "entry": 7978863,
+      "element": 212,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7978863:272": {
+      "entry": 7978863,
+      "element": 272,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3390954:57": {
+      "entry": 3390954,
+      "element": 57,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3390954:565": {
+      "entry": 3390954,
+      "element": 565,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3390954:175": {
+      "entry": 3390954,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3390954:173": {
+      "entry": 3390954,
+      "element": 173,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7942521:496": {
+      "entry": 7942521,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "7942521:201": {
+      "entry": 7942521,
+      "element": 201,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "7942521:45": {
+      "entry": 7942521,
+      "element": 45,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "7942521:112": {
+      "entry": 7942521,
+      "element": 112,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "8603104:109": {
+      "entry": 8603104,
+      "element": 109,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "8603104:11": {
+      "entry": 8603104,
+      "element": 11,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8603104:124": {
+      "entry": 8603104,
+      "element": 124,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "8603104:204": {
+      "entry": 8603104,
+      "element": 204,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "7300661:496": {
       "entry": 7300661,
       "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "7300661:212": {
       "entry": 7300661,
       "element": 212,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "7300661:124": {
+    "7300661:112": {
       "entry": 7300661,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 112,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "7300661:321": {
       "entry": 7300661,
       "element": 321,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "1806004:301": {
+      "entry": 1806004,
+      "element": 301,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "1806004:200": {
+      "entry": 1806004,
+      "element": 200,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1806004:534": {
+      "entry": 1806004,
+      "element": 534,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "1806004:323": {
+      "entry": 1806004,
+      "element": 323,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "5221159:171": {
       "entry": 5221159,
       "element": 171,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "5221159:115": {
       "entry": 5221159,
       "element": 115,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "5221159:488": {
       "entry": 5221159,
       "element": 488,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "5221159:173": {
       "entry": 5221159,
       "element": 173,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "2703964:497": {
-      "entry": 2703964,
-      "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+    "986200:57": {
+      "entry": 986200,
+      "element": 57,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
-    "2703964:488": {
-      "entry": 2703964,
-      "element": 488,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+    "986200:557": {
+      "entry": 986200,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
-    "2703964:473": {
-      "entry": 2703964,
-      "element": 473,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+    "986200:175": {
+      "entry": 986200,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
-    "2703964:259": {
-      "entry": 2703964,
-      "element": 259,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+    "986200:532": {
+      "entry": 986200,
+      "element": 532,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7295221:301": {
+      "entry": 7295221,
+      "element": 301,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7295221:387": {
+      "entry": 7295221,
+      "element": 387,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7295221:212": {
+      "entry": 7295221,
+      "element": 212,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7295221:423": {
+      "entry": 7295221,
+      "element": 423,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "5741115:58": {
       "entry": 5741115,
       "element": 58,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "5741115:87": {
+    "5741115:557": {
       "entry": 5741115,
-      "element": 87,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
-    "5741115:124": {
+    "5741115:423": {
       "entry": 5741115,
-      "element": 124,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "element": 423,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "5741115:175": {
       "entry": 5741115,
       "element": 175,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6712985:496": {
-      "entry": 6712985,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6712985:471": {
-      "entry": 6712985,
-      "element": 471,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6712985:254": {
-      "entry": 6712985,
-      "element": 254,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6712985:553": {
-      "entry": 6712985,
-      "element": 553,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "4617748:57": {
       "entry": 4617748,
       "element": 57,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "4617748:552": {
-      "entry": 4617748,
-      "element": 552,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "4617748:542": {
-      "entry": 4617748,
-      "element": 542,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "4617748:469": {
       "entry": 4617748,
       "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3081624:110": {
-      "entry": 3081624,
-      "element": 110,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "3081624:201": {
-      "entry": 3081624,
-      "element": 201,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3081624:68": {
-      "entry": 3081624,
-      "element": 68,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3081624:445": {
-      "entry": 3081624,
-      "element": 445,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "4617748:542": {
+      "entry": 4617748,
+      "element": 542,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "7978863:497": {
-      "entry": 7978863,
-      "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "4617748:552": {
+      "entry": 4617748,
+      "element": 552,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
-    },
-    "7978863:306": {
-      "entry": 7978863,
-      "element": 306,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7978863:212": {
-      "entry": 7978863,
-      "element": 212,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "7978863:469": {
-      "entry": 7978863,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
     },
     "8281881:496": {
       "entry": 8281881,
       "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "8281881:32": {
-      "entry": 8281881,
-      "element": 32,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
+    },
+    "8281881:387": {
+      "entry": 8281881,
+      "element": 387,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "8281881:204": {
       "entry": 8281881,
       "element": 204,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "8281881:346": {
       "entry": 8281881,
       "element": 346,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2703964:497": {
+      "entry": 2703964,
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2703964:557": {
+      "entry": 2703964,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "2703964:11": {
+      "entry": 2703964,
+      "element": 11,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "2703964:259": {
+      "entry": 2703964,
+      "element": 259,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "7697961:496": {
+      "entry": 7697961,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7697961:544": {
+      "entry": 7697961,
+      "element": 544,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7697961:423": {
+      "entry": 7697961,
+      "element": 423,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "7697961:175": {
+      "entry": 7697961,
+      "element": 175,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "1814199:497": {
+      "entry": 1814199,
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
+    },
+    "1814199:469": {
+      "entry": 1814199,
+      "element": 469,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "1814199:490": {
+      "entry": 1814199,
+      "element": 490,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "1814199:418": {
+      "entry": 1814199,
+      "element": 418,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "6712985:496": {
+      "entry": 6712985,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6712985:471": {
+      "entry": 6712985,
+      "element": 471,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6712985:254": {
+      "entry": 6712985,
+      "element": 254,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6712985:464": {
+      "entry": 6712985,
+      "element": 464,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8679852:58": {
+      "entry": 8679852,
+      "element": 58,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8679852:277": {
+      "entry": 8679852,
+      "element": 277,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8679852:321": {
+      "entry": 8679852,
+      "element": 321,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8679852:605": {
+      "entry": 8679852,
+      "element": 605,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "4414293:496": {
       "entry": 4414293,
       "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "4414293:469": {
+    "4414293:557": {
       "entry": 4414293,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "4414293:499": {
       "entry": 4414293,
       "element": 499,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "4414293:237": {
+    "4414293:423": {
       "entry": 4414293,
-      "element": 237,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "5166210:529": {
-      "entry": 5166210,
-      "element": 529,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "5166210:55": {
-      "entry": 5166210,
-      "element": 55,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "5166210:237": {
-      "entry": 5166210,
-      "element": 237,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "5166210:480": {
-      "entry": 5166210,
-      "element": 480,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "6717668:109": {
-      "entry": 6717668,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6717668:51": {
-      "entry": 6717668,
-      "element": 51,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "6717668:116": {
-      "entry": 6717668,
-      "element": 116,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "6717668:31": {
-      "entry": 6717668,
-      "element": 31,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1806004:301": {
-      "entry": 1806004,
-      "element": 301,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1806004:31": {
-      "entry": 1806004,
-      "element": 31,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1806004:534": {
-      "entry": 1806004,
-      "element": 534,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1806004:323": {
-      "entry": 1806004,
-      "element": 323,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "3817379:496": {
-      "entry": 3817379,
-      "element": 496,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3817379:106": {
-      "entry": 3817379,
-      "element": 106,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3817379:112": {
-      "entry": 3817379,
-      "element": 112,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "3817379:499": {
-      "entry": 3817379,
-      "element": 499,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1814199:497": {
-      "entry": 1814199,
-      "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1814199:449": {
-      "entry": 1814199,
-      "element": 449,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1814199:490": {
-      "entry": 1814199,
-      "element": 490,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "1814199:469": {
-      "entry": 1814199,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "2382016:497": {
-      "entry": 2382016,
-      "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "2382016:586": {
-      "entry": 2382016,
-      "element": 586,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "2382016:346": {
-      "entry": 2382016,
-      "element": 346,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "2382016:115": {
-      "entry": 2382016,
-      "element": 115,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 423,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "2385082:497": {
       "entry": 2385082,
       "element": 497,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "2385082:254": {
+    "2385082:552": {
       "entry": 2385082,
-      "element": 254,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "element": 552,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
-    "2385082:88": {
+    "2385082:40": {
       "entry": 2385082,
-      "element": 88,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 40,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "2385082:272": {
       "entry": 2385082,
       "element": 272,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "2998340:111": {
-      "entry": 2998340,
-      "element": 111,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "2998340:70": {
-      "entry": 2998340,
-      "element": 70,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "2998340:305": {
-      "entry": 2998340,
-      "element": 305,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "2998340:208": {
-      "entry": 2998340,
-      "element": 208,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1576257:109": {
-      "entry": 1576257,
-      "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "1576257:542": {
-      "entry": 1576257,
-      "element": 542,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "6717668:1": {
+      "entry": 6717668,
+      "element": 1,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "1576257:469": {
+    "6717668:51": {
+      "entry": 6717668,
+      "element": 51,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6717668:31": {
+      "entry": 6717668,
+      "element": 31,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "6717668:305": {
+      "entry": 6717668,
+      "element": 305,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1576257:497": {
       "entry": 1576257,
-      "element": 469,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1576257:565": {
+      "entry": 1576257,
+      "element": 565,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "1576257:124": {
+      "entry": 1576257,
+      "element": 124,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "1576257:259": {
       "entry": 1576257,
       "element": 259,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "8679852:384": {
-      "entry": 8679852,
-      "element": 384,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+    "2998340:111": {
+      "entry": 2998340,
+      "element": 111,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "8679852:280": {
-      "entry": 8679852,
-      "element": 280,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "8679852:102": {
-      "entry": 8679852,
-      "element": 102,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "8679852:308": {
-      "entry": 8679852,
-      "element": 308,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "4503546:300": {
-      "entry": 4503546,
-      "element": 300,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "4503546:208": {
-      "entry": 4503546,
-      "element": 208,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "4503546:557": {
-      "entry": 4503546,
-      "element": 557,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "4503546:26": {
-      "entry": 4503546,
-      "element": 26,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "3113940:226": {
-      "entry": 3113940,
-      "element": 226,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
-    },
-    "3113940:223": {
-      "entry": 3113940,
-      "element": 223,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "2998340:357": {
+      "entry": 2998340,
+      "element": 357,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "3113940:53": {
-      "entry": 3113940,
-      "element": 53,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "2998340:305": {
+      "entry": 2998340,
+      "element": 305,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2998340:124": {
+      "entry": 2998340,
+      "element": 124,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "2382016:497": {
+      "entry": 2382016,
+      "element": 497,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "2382016:586": {
+      "entry": 2382016,
+      "element": 586,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
-    "3113940:272": {
-      "entry": 3113940,
-      "element": 272,
-      "gameweek": 2,
-      "lastGameweek": 2,
+    "2382016:557": {
+      "entry": 2382016,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "2382016:8": {
+      "entry": 2382016,
+      "element": 8,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3817379:496": {
+      "entry": 3817379,
+      "element": 496,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "3817379:379": {
+      "entry": 3817379,
+      "element": 379,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3817379:112": {
+      "entry": 3817379,
+      "element": 112,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "3817379:499": {
+      "entry": 3817379,
+      "element": 499,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "3081624:110": {
+      "entry": 3081624,
+      "element": 110,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "3081624:369": {
+      "entry": 3081624,
+      "element": 369,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3081624:68": {
+      "entry": 3081624,
+      "element": 68,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "3081624:201": {
+      "entry": 3081624,
+      "element": 201,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
     },
     "1296714:301": {
       "entry": 1296714,
       "element": 301,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "1296714:40": {
       "entry": 1296714,
       "element": 40,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "1296714:502": {
       "entry": 1296714,
       "element": 502,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "1296714:387": {
       "entry": 1296714,
       "element": 387,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "8039556:198": {
+      "entry": 8039556,
+      "element": 198,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8039556:231": {
+      "entry": 8039556,
+      "element": 231,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8039556:40": {
+      "entry": 8039556,
+      "element": 40,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "8039556:125": {
+      "entry": 8039556,
+      "element": 125,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3113940:226": {
+      "entry": 3113940,
+      "element": 226,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "3113940:357": {
+      "entry": 3113940,
+      "element": 357,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "3113940:53": {
+      "entry": 3113940,
+      "element": 53,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "3113940:272": {
+      "entry": 3113940,
+      "element": 272,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "6085721:109": {
       "entry": 6085721,
       "element": 109,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "6085721:231": {
       "entry": 6085721,
       "element": 231,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "6085721:490": {
+    "6085721:323": {
       "entry": 6085721,
-      "element": 490,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 323,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "6085721:45": {
       "entry": 6085721,
       "element": 45,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "5166210:226": {
+      "entry": 5166210,
+      "element": 226,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "5166210:387": {
+      "entry": 5166210,
+      "element": 387,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "5166210:8": {
+      "entry": 5166210,
+      "element": 8,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
+    },
+    "5166210:237": {
+      "entry": 5166210,
+      "element": 237,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 2
+    },
+    "4503546:300": {
+      "entry": 4503546,
+      "element": 300,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "4503546:208": {
+      "entry": 4503546,
+      "element": 208,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "4503546:557": {
+      "entry": 4503546,
+      "element": 557,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
+    },
+    "4503546:26": {
+      "entry": 4503546,
+      "element": 26,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "6291766:111": {
       "entry": 6291766,
       "element": 111,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
     "6291766:559": {
       "entry": 6291766,
       "element": 559,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 3
     },
-    "6291766:201": {
+    "6291766:357": {
       "entry": 6291766,
-      "element": 201,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "element": 357,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
-    "6291766:419": {
+    "6291766:452": {
       "entry": 6291766,
-      "element": 419,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 2
+      "element": 452,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 1
     },
     "8921770:250": {
       "entry": 8921770,
       "element": 250,
-      "gameweek": 2,
-      "lastGameweek": 2,
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
+    },
+    "8921770:329": {
+      "entry": 8921770,
+      "element": 329,
+      "gameweek": 3,
+      "lastGameweek": 3,
       "streak": 1
     },
     "8921770:498": {
       "entry": 8921770,
       "element": 498,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
-    },
-    "8921770:86": {
-      "entry": 8921770,
-      "element": 86,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     },
     "8921770:106": {
       "entry": 8921770,
       "element": 106,
-      "gameweek": 2,
-      "lastGameweek": 2,
-      "streak": 1
+      "gameweek": 3,
+      "lastGameweek": 3,
+      "streak": 2
     }
   }
 }
