@@ -1358,7 +1358,7 @@ function buildSeasonBlocks({ leagueName, gw, insights, managerCount, mapping }) 
     awardLines.push(`:muscle: *Armband Merchant:* ${winnersText(armbandMerchant.winners, mapping)} — ${armbandMerchant.value}pts from captains`);
   }
   if (captainCalamity) {
-    awardLines.push(`:clown_face: *Captain Calamity:* ${winnersText(captainCalamity.winners, mapping)} — only ${captainCalamity.value}pts from captains`);
+    awardLines.push(`:sweat_smile: *Captain Calamity:* ${winnersText(captainCalamity.winners, mapping)} — only ${captainCalamity.value}pts from captains`);
   }
   group(awardLines);
 
