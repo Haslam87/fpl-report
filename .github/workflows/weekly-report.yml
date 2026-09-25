@@ -7,6 +7,19 @@ on:
         description: "Gameweek to report on (optional, defaults to auto-detect)"
         required: false
         type: string
+      report:
+        description: "Which report to run"
+        required: false
+        type: choice
+        default: weekly
+        options:
+          - weekly
+          - season-review
+      preview:
+        description: "Preview only — print to the log, don't post to Slack or update the snapshot"
+        required: false
+        type: boolean
+        default: false
   schedule:
     # Tuesday ~09:07 UTC — after Monday night fixtures and bonus-point
     # confirmation. GitHub cron runs in UTC (drifts against BST during the
@@ -33,12 +46,15 @@ jobs:
         env:
           FPL_LEAGUE_ID: ${{ secrets.FPL_LEAGUE_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GW_INPUT: ${{ inputs.gw }}
+          REPORT: ${{ inputs.report }}
+          PREVIEW: ${{ inputs.preview }}
         run: |
-          if [ -n "${{ inputs.gw }}" ]; then
-            node fpl-report.js --post --gw=${{ inputs.gw }}
-          else
-            node fpl-report.js --post
-          fi
+          args=()
+          if [ "$PREVIEW" = "true" ]; then args+=(--dry-run); else args+=(--post); fi
+          if [ "$REPORT" = "season-review" ]; then args+=(--season-review); fi
+          if [ -n "$GW_INPUT" ]; then args+=("--gw=$GW_INPUT"); fi
+          node fpl-report.js "${args[@]}"
 
       - name: Commit updated snapshot
         run: |

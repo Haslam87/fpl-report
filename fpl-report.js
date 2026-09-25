@@ -22,9 +22,10 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; fpl-report/1.0; +https://github.com
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const args = { post: false, dryRun: false, gw: null, listManagers: false };
+  const args = { post: false, dryRun: false, gw: null, listManagers: false, seasonReview: false };
   for (const raw of argv) {
     if (raw === '--post') args.post = true;
+    else if (raw === '--season-review') args.seasonReview = true;
     else if (raw === '--dry-run') args.dryRun = true;
     else if (raw === '--list-managers') args.listManagers = true;
     else if (raw.startsWith('--gw=')) {
@@ -229,7 +230,7 @@ async function fetchLeagueStandings(leagueId) {
   return { leagueName, entries: results };
 }
 
-// Returns Map<elementId, {points, cleanSheets}>. Callers that only need
+// Returns Map<elementId, {points, cleanSheets, minutes}>. Callers that only need
 // points can do `.get(id)?.points`.
 async function fetchLiveGwStats(gw) {
   const data = await fplGet(`event/${gw}/live/`);
@@ -242,10 +243,11 @@ async function fetchLiveGwStats(gw) {
         typeof e?.id === 'number' &&
         e?.stats &&
         typeof e.stats.total_points === 'number' &&
-        typeof e.stats.clean_sheets === 'number',
-      `event/${gw}/live/.elements[].stats.total_points/clean_sheets should be numbers`
+        typeof e.stats.clean_sheets === 'number' &&
+        typeof e.stats.minutes === 'number',
+      `event/${gw}/live/.elements[].stats.total_points/clean_sheets/minutes should be numbers`
     );
-    stats.set(el.id, { points: el.stats.total_points, cleanSheets: el.stats.clean_sheets });
+    stats.set(el.id, { points: el.stats.total_points, cleanSheets: el.stats.clean_sheets, minutes: el.stats.minutes });
   }
   return stats;
 }
@@ -1041,6 +1043,358 @@ async function postToSlack(webhookUrl, blocks) {
 }
 
 // ---------------------------------------------------------------------------
+// Season review (--season-review) — a one-off "season so far" post, e.g. for
+// an international break. Read-only: never touches the weekly snapshot.
+// ---------------------------------------------------------------------------
+
+async function fetchManagerSeason(entryId, gw, limit) {
+  const [history, transfers] = await Promise.all([
+    limit(() => fplGet(`entry/${entryId}/history/`)),
+    limit(() => fplGet(`entry/${entryId}/transfers/`)),
+  ]);
+  requireShape(history, (h) => Array.isArray(h?.current), `entry/${entryId}/history/.current should be an array`);
+  requireShape(history, (h) => Array.isArray(h?.chips), `entry/${entryId}/history/.chips should be an array`);
+  requireShape(transfers, (t) => Array.isArray(t), `entry/${entryId}/transfers/ should be an array`);
+
+  const seasonHistory = history.current.filter((h) => h.event <= gw);
+
+  // One picks call per gameweek played, for season captaincy totals.
+  const picksByGw = new Map();
+  await Promise.all(
+    seasonHistory.map(async (h) => {
+      let picks;
+      try {
+        picks = await limit(() => fplGet(`entry/${entryId}/event/${h.event}/picks/`));
+      } catch (err) {
+        if (err instanceof FplHttpError && err.status === 404) return;
+        throw err;
+      }
+      requireShape(picks, (p) => Array.isArray(p?.picks), `entry/${entryId}/event/${h.event}/picks/.picks should be an array`);
+      picksByGw.set(
+        h.event,
+        picks.picks.map((p) => ({
+          element: p.element,
+          multiplier: p.multiplier,
+          isCaptain: !!p.is_captain,
+          isViceCaptain: !!p.is_vice_captain,
+        }))
+      );
+    })
+  );
+
+  return {
+    seasonHistory,
+    chips: history.chips.filter((c) => c.event <= gw).map((c) => ({ name: c.name, event: c.event })),
+    transfers: transfers
+      .filter((t) => t.event <= gw)
+      .map((t) => ({ event: t.event, elementIn: t.element_in, elementOut: t.element_out })),
+    picksByGw,
+  };
+}
+
+async function collectSeasonData(leagueId, gw) {
+  const { leagueName, entries } = await fetchLeagueStandings(leagueId);
+  const limit = createLimiter(6);
+
+  const managers = await Promise.all(
+    entries.map(async (entry) => {
+      const detail = await fetchManagerSeason(entry.entry, gw, limit);
+      const playedGws = new Set(detail.seasonHistory.map((h) => h.event));
+      return {
+        entry: entry.entry,
+        playerName: entry.player_name,
+        entryName: entry.entry_name,
+        leagueRank: entry.rank,
+        seasonTotal: entry.total,
+        // Season-long totals (fewest transfers, bench points, ...) are only
+        // fair between managers who've played every gameweek so far.
+        fullSeason: Array.from({ length: gw }, (_, i) => i + 1).every((g) => playedGws.has(g)),
+        ...detail,
+      };
+    })
+  );
+
+  const liveByGw = new Map();
+  for (let g = 1; g <= gw; g++) {
+    console.error(`Fetching event/${g}/live/ ...`);
+    liveByGw.set(g, await fetchLiveGwStats(g));
+  }
+
+  return { leagueName, managers, liveByGw };
+}
+
+// Mirror of topBy for "fewest/lowest" awards.
+function bottomBy(managers, selector) {
+  const result = topBy(managers, (m) => {
+    const v = selector(m);
+    return v == null ? null : -v;
+  });
+  return result && { value: -result.value, winners: result.winners };
+}
+
+function sumHistory(m, field, skipEvents = new Set()) {
+  return m.seasonHistory.filter((h) => !skipEvents.has(h.event)).reduce((sum, h) => sum + (h[field] || 0), 0);
+}
+
+function chipEvents(m, chipName) {
+  return new Set(m.chips.filter((c) => c.name === chipName).map((c) => c.event));
+}
+
+// League rank (ties share a rank) by cumulative points after gameweek g,
+// among managers who'd played that gameweek.
+function leagueRanksAfter(managers, g) {
+  const totals = [];
+  for (const m of managers) {
+    const h = m.seasonHistory.find((x) => x.event === g);
+    if (h) totals.push({ m, total: h.total_points });
+  }
+  const ranks = new Map();
+  for (const t of totals) {
+    ranks.set(t.m.entry, 1 + totals.filter((o) => o.total > t.total).length);
+  }
+  return ranks;
+}
+
+function seasonTable(managers, size) {
+  const sorted = [...managers].sort((a, b) => a.leagueRank - b.leagueRank);
+  if (sorted.length === 0) return null;
+  const leaderTotal = sorted[0].seasonTotal;
+  return sorted.slice(0, size).map((m) => ({ m, gap: leaderTotal - m.seasonTotal }));
+}
+
+function movesSinceGw1(managers, gw) {
+  if (gw < 2) return { risers: null, fallers: null };
+  const startRanks = leagueRanksAfter(managers, 1);
+  const deltas = managers
+    .filter((m) => startRanks.has(m.entry))
+    .map((m) => ({ m, delta: startRanks.get(m.entry) - m.leagueRank }));
+  if (deltas.length === 0) return { risers: null, fallers: null };
+  const maxDelta = Math.max(...deltas.map((d) => d.delta));
+  const minDelta = Math.min(...deltas.map((d) => d.delta));
+  return {
+    risers: maxDelta > 0 ? { value: maxDelta, winners: deltas.filter((d) => d.delta === maxDelta).map((d) => d.m) } : null,
+    fallers: minDelta < 0 ? { value: minDelta, winners: deltas.filter((d) => d.delta === minDelta).map((d) => d.m) } : null,
+  };
+}
+
+// Weeks spent top of the league (ties at the top count for everyone tied).
+function topDog(managers, gw) {
+  const weeksTop = new Map();
+  for (let g = 1; g <= gw; g++) {
+    const ranks = leagueRanksAfter(managers, g);
+    for (const m of managers) {
+      if (ranks.get(m.entry) === 1) weeksTop.set(m, (weeksTop.get(m) || 0) + 1);
+    }
+  }
+  if (weeksTop.size === 0) return null;
+  return [...weeksTop.entries()].map(([m, weeks]) => ({ m, weeks })).sort((a, b) => b.weeks - a.weeks);
+}
+
+// Net points gained from transfers: for each transfer, the incoming player's
+// points minus the outgoing player's, from the transfer gameweek through `gw`,
+// minus hits taken. Chained transfers telescope (A->B then B->C nets out to
+// the players actually held each week). Free Hit transfers are skipped since
+// the squad reverts the following week.
+function transferNet(m, liveByGw, gw) {
+  if (m.transfers.length === 0) return null;
+  const freeHitEvents = chipEvents(m, 'freehit');
+  let net = 0;
+  for (const t of m.transfers) {
+    if (freeHitEvents.has(t.event)) continue;
+    for (let g = t.event; g <= gw; g++) {
+      const live = liveByGw.get(g);
+      net += (live?.get(t.elementIn)?.points ?? 0) - (live?.get(t.elementOut)?.points ?? 0);
+    }
+  }
+  return net - sumHistory(m, 'event_transfers_cost');
+}
+
+// Season captain points. If the captain didn't play, the vice-captain takes
+// the armband (and the multiplier, so a Triple Captain passes on 3x).
+function seasonCaptainPoints(m, liveByGw) {
+  let total = 0;
+  for (const [g, picks] of m.picksByGw) {
+    const live = liveByGw.get(g);
+    const captain = picks.find((p) => p.isCaptain);
+    if (!captain || !live) continue;
+    const vice = picks.find((p) => p.isViceCaptain);
+    const multiplier = captain.multiplier >= 2 ? captain.multiplier : 2;
+    let armband = captain.element;
+    if ((live.get(captain.element)?.minutes ?? 0) === 0 && vice && (live.get(vice.element)?.minutes ?? 0) > 0) {
+      armband = vice.element;
+    }
+    total += (live.get(armband)?.points ?? 0) * multiplier;
+  }
+  return total;
+}
+
+// Chips reset at GW20 (two sets per season since 2025/26), so "in hand"
+// only looks at the current half.
+const CHIP_LABELS = { wildcard: 'Wildcard', freehit: 'Free Hit', bboost: 'Bench Boost', '3xc': 'Triple Captain' };
+const SECOND_HALF_START_GW = 20;
+
+function chipsInHand(managers, gw) {
+  if (managers.length === 0) return null;
+  const halfStart = gw >= SECOND_HALF_START_GW ? SECOND_HALF_START_GW : 1;
+  const chipsThisHalf = (m) => m.chips.filter((c) => c.event >= halfStart);
+  const holding = Object.entries(CHIP_LABELS).map(([name, label]) => ({
+    label,
+    count: managers.filter((m) => !chipsThisHalf(m).some((c) => c.name === name)).length,
+  }));
+  return {
+    holding,
+    untouched: managers.filter((m) => chipsThisHalf(m).length === 0).length,
+    total: managers.length,
+    secondHalf: halfStart > 1,
+  };
+}
+
+function computeSeasonInsights(managers, liveByGw, gw) {
+  const full = managers.filter((m) => m.fullSeason);
+  const withNet = full.map((m) => ({ m, net: transferNet(m, liveByGw, gw) }));
+  const netOf = new Map(withNet.map((x) => [x.m, x.net]));
+  const captainOf = new Map(full.map((m) => [m, seasonCaptainPoints(m, liveByGw)]));
+  const directorOfFootball = topBy(full, (m) => netOf.get(m));
+
+  return {
+    table: seasonTable(managers, 10),
+    moves: movesSinceGw1(managers, gw),
+    topDog: topDog(managers, gw),
+    casual: bottomBy(full, (m) => m.transfers.length),
+    sackTheManager: bottomBy(full, (m) => netOf.get(m)),
+    directorOfFootball: directorOfFootball && directorOfFootball.value > 0 ? directorOfFootball : null,
+    hitAddict: topBy(full, (m) => {
+      const hits = sumHistory(m, 'event_transfers_cost');
+      return hits > 0 ? hits : null;
+    }),
+    benchRegret: topBy(full, (m) => sumHistory(m, 'points_on_bench', chipEvents(m, 'bboost'))),
+    armbandMerchant: topBy(full, (m) => captainOf.get(m)),
+    captainCalamity: bottomBy(full, (m) => captainOf.get(m)),
+    chips: chipsInHand(managers, gw),
+  };
+}
+
+// A long list of tied names reads badly in Slack — collapse it past a few.
+function winnersText(winners, mapping, max = 3) {
+  if (winners.length > max) return `${winners.length} managers tied`;
+  return mentionList(winners, mapping);
+}
+
+function signed(n) {
+  return n > 0 ? `+${n}` : String(n);
+}
+
+function buildSeasonBlocks({ leagueName, gw, insights, managerCount, mapping }) {
+  const blocks = [];
+  const section = (text) => blocks.push({ type: 'section', text: { type: 'mrkdwn', text } });
+  const group = (lines) => {
+    if (lines.length > 0) section(lines.join('\n'));
+  };
+  const {
+    table,
+    moves,
+    topDog: leaders,
+    casual,
+    sackTheManager,
+    directorOfFootball,
+    hitAddict,
+    benchRegret,
+    armbandMerchant,
+    captainCalamity,
+    chips,
+  } = insights;
+
+  blocks.push({
+    type: 'header',
+    text: { type: 'plain_text', text: `Season So Far (GW1–${gw}) — ${leagueName}`, emoji: true },
+  });
+  section(`_The story after ${gw} gameweek${gw === 1 ? '' : 's'} · ${managerCount} managers_`);
+  blocks.push({ type: 'divider' });
+
+  if (table) {
+    const lines = [`:trophy: *Top ${table.length}*`];
+    for (const [i, row] of table.entries()) {
+      const gap = i === 0 ? '' : ` _(-${row.gap})_`;
+      lines.push(`${row.m.leagueRank}. ${mention(row.m, mapping)} — ${row.m.seasonTotal}pts${gap}`);
+    }
+    group(lines);
+  }
+
+  const moveLines = [];
+  if (moves.risers) {
+    moveLines.push(`:rocket: *Biggest climber since GW1:* ${winnersText(moves.risers.winners, mapping)} — up ${moves.risers.value} place${moves.risers.value === 1 ? '' : 's'}`);
+  }
+  if (moves.fallers) {
+    const n = Math.abs(moves.fallers.value);
+    moveLines.push(`:parachute: *Biggest faller since GW1:* ${winnersText(moves.fallers.winners, mapping)} — down ${n} place${n === 1 ? '' : 's'}`);
+  }
+  group(moveLines);
+
+  blocks.push({ type: 'divider' });
+
+  const awardLines = [':medal: *Season Awards*'];
+  if (leaders && leaders.length > 0) {
+    const top = leaders.slice(0, 3).map((l) => `${mention(l.m, mapping)} (${l.weeks} week${l.weeks === 1 ? '' : 's'})`);
+    awardLines.push(`:crown: *Top Dog:* weeks spent top of the league — ${top.join(', ')}`);
+  }
+  if (casual) {
+    const hasnt = casual.winners.length === 1 ? "hasn't" : "haven't";
+    const detail = casual.value === 0 ? `${hasnt} made a single transfer` : `just ${casual.value} transfer${casual.value === 1 ? '' : 's'} all season`;
+    awardLines.push(`:sloth: *The Casual:* ${winnersText(casual.winners, mapping)} — ${detail}`);
+  }
+  if (sackTheManager) {
+    awardLines.push(`:fire: *Sack the Manager:* ${winnersText(sackTheManager.winners, mapping)} — transfers have netted ${signed(sackTheManager.value)}pts (after hits)`);
+  }
+  if (directorOfFootball) {
+    awardLines.push(`:briefcase: *Director of Football:* ${winnersText(directorOfFootball.winners, mapping)} — transfers have netted ${signed(directorOfFootball.value)}pts (after hits)`);
+  }
+  if (hitAddict) {
+    awardLines.push(`:money_with_wings: *Hit Addict:* ${winnersText(hitAddict.winners, mapping)} — ${hitAddict.value}pts spent on hits`);
+  }
+  if (benchRegret) {
+    awardLines.push(`:sob: *Bench Regret:* ${winnersText(benchRegret.winners, mapping)} — ${benchRegret.value}pts left on the bench`);
+  }
+  if (armbandMerchant) {
+    awardLines.push(`:muscle: *Armband Merchant:* ${winnersText(armbandMerchant.winners, mapping)} — ${armbandMerchant.value}pts from captains`);
+  }
+  if (captainCalamity) {
+    awardLines.push(`:clown_face: *Captain Calamity:* ${winnersText(captainCalamity.winners, mapping)} — only ${captainCalamity.value}pts from captains`);
+  }
+  group(awardLines);
+
+  if (chips) {
+    blocks.push({ type: 'divider' });
+    const chipLines = [`:black_joker: *Chips in Hand*${chips.secondHalf ? ' _(second-half chips)_' : ''}`];
+    chipLines.push(chips.holding.map((h) => `${h.label} ${h.count}/${chips.total}`).join(' · '));
+    if (chips.untouched > 0) {
+      chipLines.push(`${chips.untouched} manager${chips.untouched === 1 ? " hasn't" : "s haven't"} played a single chip yet`);
+    }
+    group(chipLines);
+  }
+
+  return blocks;
+}
+
+async function runSeasonReview(config, args, gw) {
+  console.error(`Building season review through Gameweek ${gw}`);
+  console.error(`Fetching leagues-classic/${config.leagueId}/standings/ and per-manager history ...`);
+  const { leagueName, managers, liveByGw } = await collectSeasonData(config.leagueId, gw);
+  console.error(`Fetched data for ${managers.length} managers`);
+
+  const mapping = await loadManagerMapping();
+  const insights = computeSeasonInsights(managers, liveByGw, gw);
+  const blocks = buildSeasonBlocks({ leagueName, gw, insights, managerCount: managers.length, mapping });
+
+  console.log(blocksToText(blocks));
+
+  if (args.post) {
+    console.error('Posting to Slack ...');
+    await postToSlack(config.slackWebhookUrl, blocks);
+    console.error('Posted to Slack.');
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -1060,6 +1414,12 @@ async function main() {
     console.log('No gameweek has finished yet this season — nothing to report.');
     return;
   }
+
+  if (args.seasonReview) {
+    await runSeasonReview(config, args, gw);
+    return;
+  }
+
   console.error(`Reporting on Gameweek ${gw}${event?.data_checked ? '' : ' (bonus not yet finalised)'}`);
 
   console.error(`Fetching leagues-classic/${config.leagueId}/standings/ ...`);

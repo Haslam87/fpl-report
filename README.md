@@ -20,6 +20,7 @@ node fpl-report.js --post        # also post to Slack (requires SLACK_WEBHOOK_UR
 node fpl-report.js --gw=3        # force a specific gameweek instead of auto-detecting
 node fpl-report.js --dry-run     # don't write data/last-standings.json
 node fpl-report.js --list-managers --dry-run   # print FPL entry ID -> name, for building manager-mapping.json
+node fpl-report.js --season-review          # one-off "season so far" post (see below); add --post to send it
 ```
 
 The gameweek is auto-detected as the most recently finished, bonus-confirmed
@@ -61,6 +62,34 @@ captained/owned, most transferred in/out, plus:
 Several of these need multiple gameweeks of history to say anything (streaks,
 consistency, bench-warmer) and will be silent for the first few runs — this
 is expected, not a bug.
+
+## Season review
+
+`--season-review` builds a one-off "season so far" post instead of the weekly
+report — handy for an international break. It's read-only (never touches the
+snapshot) and contains:
+
+- **Top 10** with the points gap to the leader, plus the biggest climber/faller since GW1
+- **Top Dog** — most weeks spent top of the league
+- **The Casual** — fewest transfers all season
+- **Sack the Manager / Director of Football** — worst/best net points from
+  transfers (incoming minus outgoing player's points from the transfer week
+  onwards, minus hits; Free Hit weeks ignored)
+- **Hit Addict** — most points spent on hits
+- **Bench Regret** — most bench points left unused (Bench Boost weeks excluded)
+- **Armband Merchant / Captain Calamity** — most/fewest captain points (vice
+  counted when the captain didn't play)
+- **Chips in Hand** — how many managers still hold each chip this half
+
+Season-long awards only consider managers who've played every gameweek so
+far, so late joiners don't win "fewest transfers" by default. The top-10
+table always reflects current standings, even with `--gw`. It fetches picks
+for every manager for every gameweek, so it makes a few hundred API calls
+and takes longer than the weekly report.
+
+From GitHub: **Actions → FPL Weekly Report → Run workflow**, pick
+`season-review`, tick **Preview only** to check the output in the job log,
+then run again unticked to post.
 
 ## Snapshot
 
