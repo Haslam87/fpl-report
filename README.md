@@ -87,9 +87,8 @@ table always reflects current standings, even with `--gw`. It fetches picks
 for every manager for every gameweek, so it makes a few hundred API calls
 and takes longer than the weekly report.
 
-From GitHub: **Actions → FPL Weekly Report → Run workflow**, pick
-`season-review`, tick **Preview only** to check the output in the job log,
-then run again unticked to post.
+It's run by the separate one-off `season-review.yml` workflow, not the
+weekly one.
 
 ## Snapshot
 

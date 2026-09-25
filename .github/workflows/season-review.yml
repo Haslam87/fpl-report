@@ -1,0 +1,39 @@
+name: FPL Season Review (one-off)
+
+# One-off "season so far" post. Lives only on this branch — never merged to
+# main, so the weekly report is untouched. Runs when this file is pushed:
+# with POST "false" it only prints the post to the job log (preview); flip
+# it to "true" and push again to send it to Slack.
+
+on:
+  push:
+    branches:
+      - claude/intl-break-update-ideas-lzoraw
+    paths:
+      - .github/workflows/season-review.yml
+
+permissions:
+  contents: read
+
+jobs:
+  season-review:
+    runs-on: ubuntu-latest
+    env:
+      POST: "false"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Run season review
+        env:
+          FPL_LEAGUE_ID: ${{ secrets.FPL_LEAGUE_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "$POST" = "true" ]; then
+            node fpl-report.js --season-review --post
+          else
+            node fpl-report.js --season-review
+          fi
