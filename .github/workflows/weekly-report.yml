@@ -7,6 +7,11 @@ on:
         description: "Gameweek to report on (optional, defaults to auto-detect)"
         required: false
         type: string
+      force:
+        description: "Post even if this gameweek was already reported"
+        required: false
+        type: boolean
+        default: false
   schedule:
     # Tuesday ~09:07 UTC — after Monday night fixtures and bonus-point
     # confirmation. GitHub cron runs in UTC (drifts against BST during the
@@ -33,12 +38,13 @@ jobs:
         env:
           FPL_LEAGUE_ID: ${{ secrets.FPL_LEAGUE_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GW_INPUT: ${{ inputs.gw }}
+          FORCE: ${{ inputs.force }}
         run: |
-          if [ -n "${{ inputs.gw }}" ]; then
-            node fpl-report.js --post --gw=${{ inputs.gw }}
-          else
-            node fpl-report.js --post
-          fi
+          args=(--post)
+          if [ -n "$GW_INPUT" ]; then args+=("--gw=$GW_INPUT"); fi
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          node fpl-report.js "${args[@]}"
 
       - name: Commit updated snapshot
         run: |

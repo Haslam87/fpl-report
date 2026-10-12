@@ -18,6 +18,7 @@ cp .env.example .env
 node fpl-report.js               # print report to console only
 node fpl-report.js --post        # also post to Slack (requires SLACK_WEBHOOK_URL)
 node fpl-report.js --gw=3        # force a specific gameweek instead of auto-detecting
+node fpl-report.js --post --force  # post even if this gameweek was already reported
 node fpl-report.js --dry-run     # don't write data/last-standings.json
 node fpl-report.js --list-managers --dry-run   # print FPL entry ID -> name, for building manager-mapping.json
 ```
@@ -25,6 +26,10 @@ node fpl-report.js --list-managers --dry-run   # print FPL entry ID -> name, for
 The gameweek is auto-detected as the most recently finished, bonus-confirmed
 event from `bootstrap-static/events`. Override with `--gw` for backfills or
 debugging.
+
+With `--post`, a gameweek that's already been reported (per
+`data/last-standings.json`) is skipped, so scheduled runs during an
+international break don't repeat the last report. Pass `--force` to post anyway.
 
 ## Manager mentions
 
