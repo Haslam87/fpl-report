@@ -22,9 +22,10 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; fpl-report/1.0; +https://github.com
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const args = { post: false, dryRun: false, gw: null, listManagers: false };
+  const args = { post: false, dryRun: false, gw: null, listManagers: false, force: false };
   for (const raw of argv) {
     if (raw === '--post') args.post = true;
+    else if (raw === '--force') args.force = true;
     else if (raw === '--dry-run') args.dryRun = true;
     else if (raw === '--list-managers') args.listManagers = true;
     else if (raw.startsWith('--gw=')) {
@@ -1060,6 +1061,18 @@ async function main() {
     console.log('No gameweek has finished yet this season — nothing to report.');
     return;
   }
+
+  // Don't re-post a gameweek that's already been reported (e.g. scheduled
+  // runs during an international break, when no new gameweek has finished).
+  // --force overrides this for a deliberate re-post.
+  if (args.post && !args.force) {
+    const lastReported = (await readSnapshot())?.current?.gameweek;
+    if (lastReported === gw) {
+      console.log(`Gameweek ${gw} has already been reported — nothing new to post. Use --force to post it again.`);
+      return;
+    }
+  }
+
   console.error(`Reporting on Gameweek ${gw}${event?.data_checked ? '' : ' (bonus not yet finalised)'}`);
 
   console.error(`Fetching leagues-classic/${config.leagueId}/standings/ ...`);
