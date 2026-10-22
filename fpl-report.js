@@ -1068,7 +1068,20 @@ async function main() {
   if (args.post && !args.force) {
     const lastReported = (await readSnapshot())?.current?.gameweek;
     if (lastReported === gw) {
-      console.log(`Gameweek ${gw} has already been reported — nothing new to post. Use --force to post it again.`);
+      // If the next gameweek has already started but isn't settled yet (e.g.
+      // Monday night football, bonus points pending), say so — a later
+      // scheduled run will pick it up.
+      const pending = events.find(
+        (e) => e.id === gw + 1 && !(e.finished && e.data_checked) && new Date(e.deadline_time) <= new Date()
+      );
+      if (pending) {
+        console.log(
+          `Gameweek ${pending.id} isn't settled yet (fixtures or bonus points still pending) — ` +
+            `latest settled gameweek ${gw} is already reported. Nothing to post; a later run will retry.`
+        );
+      } else {
+        console.log(`Gameweek ${gw} has already been reported — nothing new to post. Use --force to post it again.`);
+      }
       return;
     }
   }
