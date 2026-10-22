@@ -78,7 +78,10 @@ the repo by CI — see the workflow.
 ## GitHub Actions
 
 `.github/workflows/weekly-report.yml` runs on a Tuesday-morning cron (after
-weekend fixtures + bonus points settle) and via manual `workflow_dispatch`.
+weekend fixtures + bonus points settle), retries on Wednesday and Thursday
+in case the gameweek hadn't settled yet (e.g. Monday night football), and runs
+via manual `workflow_dispatch`. Retries are harmless: an already-reported
+gameweek is skipped.
 Configure these repository secrets:
 
 - `FPL_LEAGUE_ID`

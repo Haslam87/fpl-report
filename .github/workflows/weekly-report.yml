@@ -19,7 +19,12 @@ on:
     # deliberately avoids GitHub's documented top-of-the-hour scheduler
     # congestion; scheduled runs can still be delayed under load, so treat
     # this as "roughly Tuesday morning", not exact.
-    - cron: "7 9 * * 2"
+    #
+    # Also retried Wednesday and Thursday: if Monday night football (or slow
+    # bonus confirmation) means the gameweek isn't settled on Tuesday, a later
+    # run picks it up. Once a gameweek is reported, later runs skip it, so the
+    # extra runs are no-ops in a normal week.
+    - cron: "7 9 * * 2,3,4"
 
 permissions:
   contents: write
