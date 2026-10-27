@@ -13,18 +13,19 @@ on:
         type: boolean
         default: false
   schedule:
-    # Tuesday ~09:07 UTC — after Monday night fixtures and bonus-point
-    # confirmation. GitHub cron runs in UTC (drifts against BST during the
-    # season, so this lands ~10:07 local during BST). Off-the-hour minute
-    # deliberately avoids GitHub's documented top-of-the-hour scheduler
-    # congestion; scheduled runs can still be delayed under load, so treat
-    # this as "roughly Tuesday morning", not exact.
+    # Tuesday early morning (05:07 UTC), with a second attempt at 09:07 UTC —
+    # after Monday night fixtures and bonus-point confirmation. GitHub cron
+    # runs in UTC (so ~06:07/10:07 local during BST). Scheduled runs are often
+    # delayed by hours under load (observed: 09:07 starting mid-afternoon), so
+    # the early slot is there to land in the morning despite that lag. Off-the-
+    # hour minutes deliberately avoid GitHub's top-of-the-hour congestion.
     #
-    # Also retried Wednesday and Thursday: if Monday night football (or slow
-    # bonus confirmation) means the gameweek isn't settled on Tuesday, a later
-    # run picks it up. Once a gameweek is reported, later runs skip it, so the
-    # extra runs are no-ops in a normal week.
-    - cron: "7 9 * * 2,3,4"
+    # Also retried Wednesday and Thursday (09:07 UTC): if Monday night football
+    # (or slow bonus confirmation) means the gameweek isn't settled yet, a
+    # later run picks it up. Once a gameweek is reported, later runs skip it,
+    # so the extra runs are no-ops in a normal week.
+    - cron: "7 5,9 * * 2"
+    - cron: "7 9 * * 3,4"
 
 permissions:
   contents: write
