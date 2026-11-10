@@ -32,8 +32,9 @@ jobs:
           FPL_LEAGUE_ID: ${{ secrets.FPL_LEAGUE_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          # --since=5: compare against the last update (posted at GW5).
           if [ "$POST" = "true" ]; then
-            node fpl-report.js --season-review --post
+            node fpl-report.js --season-review --since=5 --post
           else
-            node fpl-report.js --season-review
+            node fpl-report.js --season-review --since=5
           fi

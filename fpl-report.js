@@ -22,10 +22,18 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; fpl-report/1.0; +https://github.com
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const args = { post: false, dryRun: false, gw: null, listManagers: false, seasonReview: false };
+  const args = { post: false, dryRun: false, gw: null, listManagers: false, force: false, seasonReview: false, since: null };
   for (const raw of argv) {
     if (raw === '--post') args.post = true;
+    else if (raw === '--force') args.force = true;
     else if (raw === '--season-review') args.seasonReview = true;
+    else if (raw.startsWith('--since=')) {
+      const n = Number(raw.slice('--since='.length));
+      if (!Number.isInteger(n) || n < 1) {
+        throw new Error(`--since must be a positive integer, got "${raw.slice('--since='.length)}"`);
+      }
+      args.since = n;
+    }
     else if (raw === '--dry-run') args.dryRun = true;
     else if (raw === '--list-managers') args.listManagers = true;
     else if (raw.startsWith('--gw=')) {
@@ -1047,6 +1055,24 @@ async function postToSlack(webhookUrl, blocks) {
 // an international break. Read-only: never touches the weekly snapshot.
 // ---------------------------------------------------------------------------
 
+// Optional list of FPL entry IDs who've asked to sit out the lighthearted
+// "roast" awards (The Casual, Sack the Manager, Hindsight Regret, Triple
+// Captain Flop). They're left out of those, and the award goes to the next
+// eligible manager. An absent file just means nobody has opted out.
+const OPT_OUT_PATH = new URL('./award-opt-out.json', import.meta.url);
+
+async function loadAwardOptOut() {
+  const fs = await import('node:fs/promises');
+  try {
+    const parsed = JSON.parse(await fs.readFile(OPT_OUT_PATH, 'utf8'));
+    requireShape(parsed, (p) => Array.isArray(p), 'award-opt-out.json should be an array of FPL entry IDs');
+    return new Set(parsed.map(String));
+  } catch (err) {
+    if (err.code === 'ENOENT') return new Set();
+    throw new Error(`Failed to read award-opt-out.json: ${err.message}`);
+  }
+}
+
 async function fetchManagerSeason(entryId, gw, limit) {
   const [history, transfers] = await Promise.all([
     limit(() => fplGet(`entry/${entryId}/history/`)),
@@ -1074,6 +1100,7 @@ async function fetchManagerSeason(entryId, gw, limit) {
         h.event,
         picks.picks.map((p) => ({
           element: p.element,
+          position: p.position,
           multiplier: p.multiplier,
           isCaptain: !!p.is_captain,
           isViceCaptain: !!p.is_vice_captain,
@@ -1106,8 +1133,8 @@ async function collectSeasonData(leagueId, gw) {
         entryName: entry.entry_name,
         leagueRank: entry.rank,
         seasonTotal: entry.total,
-        // Season-long totals (fewest transfers, bench points, ...) are only
-        // fair between managers who've played every gameweek so far.
+        // Season-long totals (fewest transfers, ...) are only fair between
+        // managers who've played every gameweek so far.
         fullSeason: Array.from({ length: gw }, (_, i) => i + 1).every((g) => playedGws.has(g)),
         ...detail,
       };
@@ -1162,12 +1189,22 @@ function seasonTable(managers, size) {
   return sorted.slice(0, size).map((m) => ({ m, gap: leaderTotal - m.seasonTotal }));
 }
 
-function movesSinceGw1(managers, gw) {
-  if (gw < 2) return { risers: null, fallers: null };
-  const startRanks = leagueRanksAfter(managers, 1);
-  const deltas = managers
-    .filter((m) => startRanks.has(m.entry))
-    .map((m) => ({ m, delta: startRanks.get(m.entry) - m.leagueRank }));
+// Places gained (positive) or lost between two gameweeks, for managers who
+// were in the league at both points.
+function rankMovement(managers, fromGw, toGw) {
+  const from = leagueRanksAfter(managers, fromGw);
+  const to = leagueRanksAfter(managers, toGw);
+  const movement = new Map();
+  for (const m of managers) {
+    if (from.has(m.entry) && to.has(m.entry)) {
+      movement.set(m.entry, { from: from.get(m.entry), to: to.get(m.entry), delta: from.get(m.entry) - to.get(m.entry) });
+    }
+  }
+  return movement;
+}
+
+function biggestMovers(managers, movement) {
+  const deltas = managers.filter((m) => movement.has(m.entry)).map((m) => ({ m, delta: movement.get(m.entry).delta }));
   if (deltas.length === 0) return { risers: null, fallers: null };
   const maxDelta = Math.max(...deltas.map((d) => d.delta));
   const minDelta = Math.min(...deltas.map((d) => d.delta));
@@ -1175,6 +1212,29 @@ function movesSinceGw1(managers, gw) {
     risers: maxDelta > 0 ? { value: maxDelta, winners: deltas.filter((d) => d.delta === maxDelta).map((d) => d.m) } : null,
     fallers: minDelta < 0 ? { value: minDelta, winners: deltas.filter((d) => d.delta === minDelta).map((d) => d.m) } : null,
   };
+}
+
+// Points scored over the gameweeks after `sinceGw` up to `gw`, for managers
+// who played all of them — the "form" table.
+function formTable(managers, sinceGw, gw, size) {
+  const weeks = Array.from({ length: gw - sinceGw }, (_, i) => sinceGw + 1 + i);
+  const rows = managers
+    .map((m) => {
+      const byEvent = new Map(m.seasonHistory.map((h) => [h.event, h.points]));
+      if (!weeks.every((w) => byEvent.has(w))) return null;
+      return { m, points: weeks.reduce((sum, w) => sum + byEvent.get(w), 0) };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.points - a.points);
+  return rows.length > 0 ? rows.slice(0, size) : null;
+}
+
+// Highest single-gameweek score of the season so far.
+function peakWeek(managers) {
+  const entries = managers.flatMap((m) => m.seasonHistory.map((h) => ({ m, event: h.event, points: h.points })));
+  if (entries.length === 0) return null;
+  const max = Math.max(...entries.map((e) => e.points));
+  return { value: max, winners: entries.filter((e) => e.points === max) };
 }
 
 // Weeks spent top of the league (ties at the top count for everyone tied).
@@ -1209,27 +1269,92 @@ function transferNet(m, liveByGw, gw) {
   return net - sumHistory(m, 'event_transfers_cost');
 }
 
-// Season captain points. If the captain didn't play, the vice-captain takes
-// the armband (and the multiplier, so a Triple Captain passes on 3x).
-function seasonCaptainPoints(m, liveByGw) {
-  let total = 0;
-  for (const [g, picks] of m.picksByGw) {
-    const live = liveByGw.get(g);
-    const captain = picks.find((p) => p.isCaptain);
-    if (!captain || !live) continue;
-    const vice = picks.find((p) => p.isViceCaptain);
-    const multiplier = captain.multiplier >= 2 ? captain.multiplier : 2;
-    let armband = captain.element;
-    if ((live.get(captain.element)?.minutes ?? 0) === 0 && vice && (live.get(vice.element)?.minutes ?? 0) > 0) {
-      armband = vice.element;
+// Every individual swap, scored as: incoming player's points minus outgoing
+// player's, for the gameweeks the incoming player was actually held (until
+// that manager sold him again, or `gw`). Before hits. Free Hit weeks are
+// skipped since the squad reverts.
+function transferSwaps(m, liveByGw, gw) {
+  const freeHitEvents = chipEvents(m, 'freehit');
+  const swaps = [];
+  for (const t of m.transfers) {
+    if (freeHitEvents.has(t.event)) continue;
+    const soldAgain = m.transfers
+      .filter((u) => u.elementOut === t.elementIn && u.event > t.event)
+      .map((u) => u.event)
+      .sort((a, b) => a - b)[0];
+    const endGw = soldAgain != null ? soldAgain - 1 : gw;
+    let net = 0;
+    for (let g = t.event; g <= endGw; g++) {
+      const live = liveByGw.get(g);
+      net += (live?.get(t.elementIn)?.points ?? 0) - (live?.get(t.elementOut)?.points ?? 0);
     }
-    total += (live.get(armband)?.points ?? 0) * multiplier;
+    swaps.push({ m, elementIn: t.elementIn, elementOut: t.elementOut, event: t.event, weeks: endGw - t.event + 1, net });
   }
-  return total;
+  return swaps;
 }
 
-// Chips reset at GW20 (two sets per season since 2025/26), so "in hand"
-// only looks at the current half.
+function bestAndWorstSwap(managersForBest, managersForWorst, liveByGw, gw) {
+  const best = managersForBest.flatMap((m) => transferSwaps(m, liveByGw, gw));
+  const worst = managersForWorst.flatMap((m) => transferSwaps(m, liveByGw, gw));
+  const maxNet = best.length > 0 ? Math.max(...best.map((s) => s.net)) : null;
+  const minNet = worst.length > 0 ? Math.min(...worst.map((s) => s.net)) : null;
+  return {
+    hero: maxNet != null && maxNet > 0 ? best.find((s) => s.net === maxNet) : null,
+    regret: minNet != null && minNet < 0 ? worst.find((s) => s.net === minNet) : null,
+  };
+}
+
+// The armband's points in one gameweek. If the captain didn't play, the
+// vice-captain takes the armband (and the multiplier, so a Triple Captain
+// passes on 3x).
+function captainReturn(picks, live) {
+  const captain = picks?.find((p) => p.isCaptain);
+  if (!captain || !live) return null;
+  const vice = picks.find((p) => p.isViceCaptain);
+  const multiplier = captain.multiplier >= 2 ? captain.multiplier : 2;
+  let armband = captain.element;
+  if ((live.get(captain.element)?.minutes ?? 0) === 0 && vice && (live.get(vice.element)?.minutes ?? 0) > 0) {
+    armband = vice.element;
+  }
+  return { element: armband, points: (live.get(armband)?.points ?? 0) * multiplier };
+}
+
+function chipPlays(managers, liveByGw) {
+  const triple = [];
+  const bench = [];
+  for (const m of managers) {
+    for (const c of m.chips) {
+      if (c.name === '3xc') {
+        const ret = captainReturn(m.picksByGw.get(c.event), liveByGw.get(c.event));
+        if (ret) triple.push({ m, event: c.event, element: ret.element, points: ret.points });
+      } else if (c.name === 'bboost') {
+        // The API's points_on_bench reads 0 in a Bench Boost week (the bench
+        // counts), so score the four bench slots from the squad instead.
+        const picks = m.picksByGw.get(c.event);
+        const live = liveByGw.get(c.event);
+        if (picks && live) {
+          const points = picks.filter((p) => p.position >= 12).reduce((sum, p) => sum + (live.get(p.element)?.points ?? 0), 0);
+          bench.push({ m, event: c.event, points });
+        }
+      }
+    }
+  }
+  return { triple, bench };
+}
+
+// A Triple Captain only counts as a "flop" if it returned this few points or
+// fewer (i.e. the captain scored 6 or less before the 3x) — otherwise the
+// lowest of a good bunch isn't really a flop.
+const TRIPLE_FLOP_MAX_POINTS = 18;
+
+function extremeBy(list, key, direction) {
+  if (list.length === 0) return null;
+  const target = direction === 'max' ? Math.max(...list.map((x) => x[key])) : Math.min(...list.map((x) => x[key]));
+  return list.find((x) => x[key] === target);
+}
+
+// Chips reset at GW20 (two sets per season), and unplayed first-half chips
+// expire after GW19, so "in hand" only looks at the current half.
 const CHIP_LABELS = { wildcard: 'Wildcard', freehit: 'Free Hit', bboost: 'Bench Boost', '3xc': 'Triple Captain' };
 const SECOND_HALF_START_GW = 20;
 
@@ -1249,28 +1374,58 @@ function chipsInHand(managers, gw) {
   };
 }
 
-function computeSeasonInsights(managers, liveByGw, gw) {
+// League average gameweek score vs the average FPL manager's.
+function leagueVsWorld(managers, events, gw) {
+  let leagueSum = 0;
+  let worldSum = 0;
+  let weeks = 0;
+  let weeksAhead = 0;
+  for (let g = 1; g <= gw; g++) {
+    const world = events.find((e) => e.id === g)?.average_entry_score;
+    const scores = managers.map((m) => m.seasonHistory.find((h) => h.event === g)?.points).filter((p) => p != null);
+    if (typeof world !== 'number' || scores.length === 0) continue;
+    const leagueAvg = scores.reduce((a, b) => a + b, 0) / scores.length;
+    leagueSum += leagueAvg;
+    worldSum += world;
+    weeks += 1;
+    if (leagueAvg > world) weeksAhead += 1;
+  }
+  if (weeks === 0) return null;
+  return { leagueAvg: leagueSum / weeks, worldAvg: worldSum / weeks, weeks, weeksAhead };
+}
+
+function computeSeasonInsights(managers, liveByGw, gw, { events, since, optOut }) {
   const full = managers.filter((m) => m.fullSeason);
-  const withNet = full.map((m) => ({ m, net: transferNet(m, liveByGw, gw) }));
-  const netOf = new Map(withNet.map((x) => [x.m, x.net]));
-  const captainOf = new Map(full.map((m) => [m, seasonCaptainPoints(m, liveByGw)]));
+  // Lighthearted "roast" awards skip anyone who's opted out; the award then
+  // goes to the next eligible manager.
+  const roastable = full.filter((m) => !optOut.has(String(m.entry)));
+  const netOf = new Map(full.map((m) => [m, transferNet(m, liveByGw, gw)]));
   const directorOfFootball = topBy(full, (m) => netOf.get(m));
+  const swaps = bestAndWorstSwap(full, roastable, liveByGw, gw);
+  const plays = chipPlays(full, liveByGw);
+  const roastableSet = new Set(roastable);
+  const movement = rankMovement(managers, since, gw);
 
   return {
     table: seasonTable(managers, 10),
-    moves: movesSinceGw1(managers, gw),
+    movement,
+    movers: biggestMovers(managers, movement),
+    form: formTable(managers, since, gw, 3),
+    peak: peakWeek(managers),
     topDog: topDog(managers, gw),
-    casual: bottomBy(full, (m) => m.transfers.length),
-    sackTheManager: bottomBy(full, (m) => netOf.get(m)),
+    casual: bottomBy(roastable, (m) => m.transfers.length),
+    sackTheManager: bottomBy(roastable, (m) => netOf.get(m)),
     directorOfFootball: directorOfFootball && directorOfFootball.value > 0 ? directorOfFootball : null,
-    hitAddict: topBy(full, (m) => {
-      const hits = sumHistory(m, 'event_transfers_cost');
-      return hits > 0 ? hits : null;
-    }),
-    benchRegret: topBy(full, (m) => sumHistory(m, 'points_on_bench', chipEvents(m, 'bboost'))),
-    armbandMerchant: topBy(full, (m) => captainOf.get(m)),
-    captainCalamity: bottomBy(full, (m) => captainOf.get(m)),
+    hero: swaps.hero,
+    regret: swaps.regret,
+    bestTriple: extremeBy(plays.triple, 'points', 'max'),
+    tripleFlop: (() => {
+      const lowest = extremeBy(plays.triple.filter((p) => roastableSet.has(p.m)), 'points', 'min');
+      return lowest && lowest.points <= TRIPLE_FLOP_MAX_POINTS ? lowest : null;
+    })(),
+    bestBench: extremeBy(plays.bench, 'points', 'max'),
     chips: chipsInHand(managers, gw),
+    world: leagueVsWorld(managers, events, gw),
   };
 }
 
@@ -1284,7 +1439,25 @@ function signed(n) {
   return n > 0 ? `+${n}` : String(n);
 }
 
-function buildSeasonBlocks({ leagueName, gw, insights, managerCount, mapping }) {
+function plural(n, word) {
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
+}
+
+function movementArrow(delta) {
+  if (delta == null) return '';
+  if (delta > 0) return ` ▲${delta}`;
+  if (delta < 0) return ` ▼${Math.abs(delta)}`;
+  return ' –';
+}
+
+function swapText(s, mapping, elementInfo) {
+  return (
+    `${mention(s.m, mapping)} — ${playerLabel(s.elementIn, elementInfo)} in for ${playerLabel(s.elementOut, elementInfo)} ` +
+    `in GW${s.event}: ${signed(Math.round(s.net))}pts over ${plural(s.weeks, 'gameweek')}`
+  );
+}
+
+function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, managerCount, mapping }) {
   const blocks = [];
   const section = (text) => blocks.push({ type: 'section', text: { type: 'mrkdwn', text } });
   const group = (lines) => {
@@ -1292,41 +1465,51 @@ function buildSeasonBlocks({ leagueName, gw, insights, managerCount, mapping }) 
   };
   const {
     table,
-    moves,
+    movement,
+    movers,
+    form,
+    peak,
     topDog: leaders,
     casual,
     sackTheManager,
     directorOfFootball,
-    hitAddict,
-    benchRegret,
-    armbandMerchant,
-    captainCalamity,
+    hero,
+    regret,
+    bestTriple,
+    tripleFlop,
+    bestBench,
     chips,
+    world,
   } = insights;
 
   blocks.push({
     type: 'header',
     text: { type: 'plain_text', text: `Season So Far (GW1–${gw}) — ${leagueName}`, emoji: true },
   });
-  section(`_The story after ${gw} gameweek${gw === 1 ? '' : 's'} · ${managerCount} managers_`);
+  section(`_Since the last update at GW${since} · ${managerCount} managers_`);
   blocks.push({ type: 'divider' });
 
   if (table) {
-    const lines = [`:trophy: *Top ${table.length}*`];
+    const lines = [`:trophy: *Top ${table.length}* _(▲▼ = places since GW${since})_`];
     for (const [i, row] of table.entries()) {
       const gap = i === 0 ? '' : ` _(-${row.gap})_`;
-      lines.push(`${row.m.leagueRank}. ${mention(row.m, mapping)} — ${row.m.seasonTotal}pts${gap}`);
+      const arrow = movementArrow(movement.get(row.m.entry)?.delta);
+      lines.push(`${row.m.leagueRank}. ${mention(row.m, mapping)} — ${row.m.seasonTotal}pts${gap}${arrow}`);
     }
     group(lines);
   }
 
   const moveLines = [];
-  if (moves.risers) {
-    moveLines.push(`:rocket: *Biggest climber since GW1:* ${winnersText(moves.risers.winners, mapping)} — up ${moves.risers.value} place${moves.risers.value === 1 ? '' : 's'}`);
+  if (movers.risers) {
+    moveLines.push(`:rocket: *Biggest climber since GW${since}:* ${winnersText(movers.risers.winners, mapping)} — up ${plural(movers.risers.value, 'place')}`);
   }
-  if (moves.fallers) {
-    const n = Math.abs(moves.fallers.value);
-    moveLines.push(`:parachute: *Biggest faller since GW1:* ${winnersText(moves.fallers.winners, mapping)} — down ${n} place${n === 1 ? '' : 's'}`);
+  if (movers.fallers) {
+    moveLines.push(`:parachute: *Biggest faller since GW${since}:* ${winnersText(movers.fallers.winners, mapping)} — down ${plural(Math.abs(movers.fallers.value), 'place')}`);
+  }
+  if (form) {
+    moveLines.push(
+      `:fire: *In Form (GW${since + 1}–${gw}):* ` + form.map((f) => `${mention(f.m, mapping)} ${f.points}pts`).join(' · ')
+    );
   }
   group(moveLines);
 
@@ -1334,56 +1517,91 @@ function buildSeasonBlocks({ leagueName, gw, insights, managerCount, mapping }) 
 
   const awardLines = [':medal: *Season Awards*'];
   if (leaders && leaders.length > 0) {
-    const top = leaders.slice(0, 3).map((l) => `${mention(l.m, mapping)} (${l.weeks} week${l.weeks === 1 ? '' : 's'})`);
+    const top = leaders.slice(0, 3).map((l) => `${mention(l.m, mapping)} (${plural(l.weeks, 'week')})`);
     awardLines.push(`:crown: *Top Dog:* weeks spent top of the league — ${top.join(', ')}`);
+  }
+  if (peak) {
+    const text =
+      peak.winners.length > 3
+        ? `${peak.winners.length} managers tied`
+        : peak.winners
+            .map((w) => {
+              const chip = w.m.chips.find((c) => c.event === w.event);
+              return `${mention(w.m, mapping)} (GW${w.event}${chip ? `, ${CHIP_LABELS[chip.name] ?? chip.name}` : ''})`;
+            })
+            .join(', ');
+    awardLines.push(`:rocket: *Peak Performance:* ${text} — ${peak.value}pts in a single week`);
+  }
+  if (directorOfFootball) {
+    awardLines.push(`:briefcase: *Director of Football:* ${winnersText(directorOfFootball.winners, mapping)} — transfers have netted ${signed(directorOfFootball.value)}pts (after hits)`);
+  }
+  if (hero) {
+    awardLines.push(`:brain: *Hindsight Hero:* ${swapText(hero, mapping, elementInfo)} (before hits)`);
   }
   if (casual) {
     const hasnt = casual.winners.length === 1 ? "hasn't" : "haven't";
-    const detail = casual.value === 0 ? `${hasnt} made a single transfer` : `just ${casual.value} transfer${casual.value === 1 ? '' : 's'} all season`;
+    const detail = casual.value === 0 ? `${hasnt} made a single transfer` : `just ${plural(casual.value, 'transfer')} all season`;
     awardLines.push(`:sloth: *The Casual:* ${winnersText(casual.winners, mapping)} — ${detail}`);
   }
   if (sackTheManager) {
     awardLines.push(`:fire: *Sack the Manager:* ${winnersText(sackTheManager.winners, mapping)} — transfers have netted ${signed(sackTheManager.value)}pts (after hits)`);
   }
-  if (directorOfFootball) {
-    awardLines.push(`:briefcase: *Director of Football:* ${winnersText(directorOfFootball.winners, mapping)} — transfers have netted ${signed(directorOfFootball.value)}pts (after hits)`);
-  }
-  if (hitAddict) {
-    awardLines.push(`:money_with_wings: *Hit Addict:* ${winnersText(hitAddict.winners, mapping)} — ${hitAddict.value}pts spent on hits`);
-  }
-  if (benchRegret) {
-    awardLines.push(`:sob: *Bench Regret:* ${winnersText(benchRegret.winners, mapping)} — ${benchRegret.value}pts left on the bench`);
-  }
-  if (armbandMerchant) {
-    awardLines.push(`:muscle: *Armband Merchant:* ${winnersText(armbandMerchant.winners, mapping)} — ${armbandMerchant.value}pts from captains`);
-  }
-  if (captainCalamity) {
-    awardLines.push(`:sweat_smile: *Captain Calamity:* ${winnersText(captainCalamity.winners, mapping)} — only ${captainCalamity.value}pts from captains`);
+  if (regret) {
+    awardLines.push(`:face_with_peeking_eye: *Hindsight Regret:* ${swapText(regret, mapping, elementInfo)} (before hits)`);
   }
   group(awardLines);
 
-  if (chips) {
-    blocks.push({ type: 'divider' });
-    const chipLines = [`:black_joker: *Chips in Hand*${chips.secondHalf ? ' _(second-half chips)_' : ''}`];
-    chipLines.push(chips.holding.map((h) => `${h.label} ${h.count}/${chips.total}`).join(' · '));
-    if (chips.untouched > 0) {
-      chipLines.push(`${chips.untouched} manager${chips.untouched === 1 ? " hasn't" : "s haven't"} played a single chip yet`);
-    }
-    group(chipLines);
+  blocks.push({ type: 'divider' });
+
+  const chipLines = [':black_joker: *Chip Watch*'];
+  if (bestTriple) {
+    chipLines.push(`:star2: *Best Triple Captain:* ${mention(bestTriple.m, mapping)} — ${playerLabel(bestTriple.element, elementInfo)} banked ${bestTriple.points}pts in GW${bestTriple.event}`);
   }
+  if (bestBench) {
+    chipLines.push(`:sparkles: *Best Bench Boost:* ${mention(bestBench.m, mapping)} — ${bestBench.points}pts off the bench in GW${bestBench.event}`);
+  }
+  if (tripleFlop) {
+    chipLines.push(`:sweat_smile: *Triple Captain Flop:* ${mention(tripleFlop.m, mapping)} — only ${tripleFlop.points}pts from ${playerLabel(tripleFlop.element, elementInfo)} in GW${tripleFlop.event}`);
+  }
+  if (chips) {
+    chipLines.push(`${chips.secondHalf ? '_(second-half chips)_ ' : ''}${chips.holding.map((h) => `${h.label} ${h.count}/${chips.total}`).join(' · ')}`);
+    if (!chips.secondHalf) {
+      chipLines.push(`:hourglass_flowing_sand: *Use it or lose it:* first-half chips expire after GW19`);
+    }
+    if (chips.untouched > 0) {
+      chipLines.push(`${plural(chips.untouched, 'manager')} still ${chips.untouched === 1 ? "hasn't" : "haven't"} played a single chip`);
+    }
+  }
+  group(chipLines);
+
+  if (world) {
+    blocks.push({ type: 'divider' });
+    const diff = Math.round((world.leagueAvg - world.worldAvg) * 10) / 10;
+    group([
+      `:earth_africa: *League vs the World:* we average ${world.leagueAvg.toFixed(1)}pts a week against ${world.worldAvg.toFixed(1)} for the average FPL manager ` +
+        `(${diff >= 0 ? '+' : ''}${diff}) — ahead in ${world.weeksAhead} of ${world.weeks} weeks`,
+    ]);
+  }
+
+  blocks.push({ type: 'divider' });
+  section(`_Prefer to sit out the lighthearted awards? Message Mark and you'll be left out of them._`);
 
   return blocks;
 }
 
-async function runSeasonReview(config, args, gw) {
-  console.error(`Building season review through Gameweek ${gw}`);
+async function runSeasonReview(config, args, gw, { events, elementInfo }) {
+  const since = args.since ?? Math.max(1, gw - 5);
+  if (since >= gw) throw new Error(`--since=${since} must be earlier than the reported gameweek (${gw})`);
+
+  console.error(`Building season review through Gameweek ${gw} (changes since GW${since})`);
   console.error(`Fetching leagues-classic/${config.leagueId}/standings/ and per-manager history ...`);
   const { leagueName, managers, liveByGw } = await collectSeasonData(config.leagueId, gw);
   console.error(`Fetched data for ${managers.length} managers`);
 
   const mapping = await loadManagerMapping();
-  const insights = computeSeasonInsights(managers, liveByGw, gw);
-  const blocks = buildSeasonBlocks({ leagueName, gw, insights, managerCount: managers.length, mapping });
+  const optOut = await loadAwardOptOut();
+  const insights = computeSeasonInsights(managers, liveByGw, gw, { events, since, optOut });
+  const blocks = buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, managerCount: managers.length, mapping });
 
   console.log(blocksToText(blocks));
 
@@ -1415,9 +1633,35 @@ async function main() {
     return;
   }
 
+  // One-off season review — read-only, so it isn't subject to the
+  // already-reported check below.
   if (args.seasonReview) {
-    await runSeasonReview(config, args, gw);
+    await runSeasonReview(config, args, gw, { events, elementInfo });
     return;
+  }
+
+  // Don't re-post a gameweek that's already been reported (e.g. scheduled
+  // runs during an international break, when no new gameweek has finished).
+  // --force overrides this for a deliberate re-post.
+  if (args.post && !args.force) {
+    const lastReported = (await readSnapshot())?.current?.gameweek;
+    if (lastReported === gw) {
+      // If the next gameweek has already started but isn't settled yet (e.g.
+      // Monday night football, bonus points pending), say so — a later
+      // scheduled run will pick it up.
+      const pending = events.find(
+        (e) => e.id === gw + 1 && !(e.finished && e.data_checked) && new Date(e.deadline_time) <= new Date()
+      );
+      if (pending) {
+        console.log(
+          `Gameweek ${pending.id} isn't settled yet (fixtures or bonus points still pending) — ` +
+            `latest settled gameweek ${gw} is already reported. Nothing to post; a later run will retry.`
+        );
+      } else {
+        console.log(`Gameweek ${gw} has already been reported — nothing new to post. Use --force to post it again.`);
+      }
+      return;
+    }
   }
 
   console.error(`Reporting on Gameweek ${gw}${event?.data_checked ? '' : ' (bonus not yet finalised)'}`);

@@ -18,6 +18,7 @@ cp .env.example .env
 node fpl-report.js               # print report to console only
 node fpl-report.js --post        # also post to Slack (requires SLACK_WEBHOOK_URL)
 node fpl-report.js --gw=3        # force a specific gameweek instead of auto-detecting
+node fpl-report.js --post --force  # post even if this gameweek was already reported
 node fpl-report.js --dry-run     # don't write data/last-standings.json
 node fpl-report.js --list-managers --dry-run   # print FPL entry ID -> name, for building manager-mapping.json
 node fpl-report.js --season-review          # one-off "season so far" post (see below); add --post to send it
@@ -26,6 +27,10 @@ node fpl-report.js --season-review          # one-off "season so far" post (see 
 The gameweek is auto-detected as the most recently finished, bonus-confirmed
 event from `bootstrap-static/events`. Override with `--gw` for backfills or
 debugging.
+
+With `--post`, a gameweek that's already been reported (per
+`data/last-standings.json`) is skipped, so scheduled runs during an
+international break don't repeat the last report. Pass `--force` to post anyway.
 
 ## Manager mentions
 
@@ -67,25 +72,33 @@ is expected, not a bug.
 
 `--season-review` builds a one-off "season so far" post instead of the weekly
 report — handy for an international break. It's read-only (never touches the
-snapshot) and contains:
+snapshot). `--since=N` sets the gameweek of the previous update, so movement
+is shown "since GW N" (default: five gameweeks back). It contains:
 
-- **Top 10** with the points gap to the leader, plus the biggest climber/faller since GW1
+- **Top 10** with the points gap to the leader and ▲▼ places since the last update
+- **Biggest climber/faller** since the last update, and **In Form** — top three over those gameweeks
 - **Top Dog** — most weeks spent top of the league
-- **The Casual** — fewest transfers all season
-- **Sack the Manager / Director of Football** — worst/best net points from
+- **Peak Performance** — highest single-week score (noting any chip played)
+- **Director of Football / Sack the Manager** — best/worst net points from
   transfers (incoming minus outgoing player's points from the transfer week
   onwards, minus hits; Free Hit weeks ignored)
-- **Hit Addict** — most points spent on hits
-- **Bench Regret** — most bench points left unused (Bench Boost weeks excluded)
-- **Armband Merchant / Captain Calamity** — most/fewest captain points (vice
-  counted when the captain didn't play)
-- **Chips in Hand** — how many managers still hold each chip this half
+- **Hindsight Hero / Hindsight Regret** — best/worst single swap, scored over the
+  weeks the new player was actually held (before hits)
+- **The Casual** — fewest transfers all season
+- **Chip Watch** — best Triple Captain and Bench Boost, a Triple Captain Flop only
+  if one returned 18pts or less, and how many managers still hold each chip.
+  First-half chips expire after GW19; a fresh set arrives at GW20.
+- **League vs the World** — league average gameweek score vs the average FPL manager
 
 Season-long awards only consider managers who've played every gameweek so
-far, so late joiners don't win "fewest transfers" by default. The top-10
-table always reflects current standings, even with `--gw`. It fetches picks
+far, so late joiners don't win "fewest transfers" by default. It fetches picks
 for every manager for every gameweek, so it makes a few hundred API calls
 and takes longer than the weekly report.
+
+**Opting out of the lighthearted awards:** list FPL entry IDs in
+`award-opt-out.json` (e.g. `["6717668"]`). Those managers are skipped for The
+Casual, Sack the Manager, Hindsight Regret and Triple Captain Flop, and the
+award goes to the next eligible manager. Praise awards are unaffected.
 
 It's run by the separate one-off `season-review.yml` workflow, not the
 weekly one.
@@ -100,8 +113,11 @@ the repo by CI — see the workflow.
 
 ## GitHub Actions
 
-`.github/workflows/weekly-report.yml` runs on a Tuesday-morning cron (after
-weekend fixtures + bonus points settle) and via manual `workflow_dispatch`.
+`.github/workflows/weekly-report.yml` runs early on Tuesday (05:07 UTC, with a
+second attempt at 09:07 UTC — GitHub often starts scheduled runs hours late),
+retries on Wednesday and Thursday in case the gameweek hadn't settled yet (e.g.
+Monday night football), and runs via manual `workflow_dispatch`. Retries are
+harmless: an already-reported gameweek is skipped.
 Configure these repository secrets:
 
 - `FPL_LEAGUE_ID`
