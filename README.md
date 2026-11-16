@@ -79,7 +79,7 @@ is shown "since GW N" (default: five gameweeks back). It contains:
 - **Biggest climber/faller** since the last update, and **In Form** — top three over those gameweeks
 - **Top Dog** — most weeks spent top of the league
 - **Peak Performance** — highest single-week score (noting any chip played)
-- **Director of Football / Sack the Manager** — best/worst net points from
+- **Director of Football** — best net points from
   transfers (incoming minus outgoing player's points from the transfer week
   onwards, minus hits; Free Hit weeks ignored)
 - **Hindsight Hero / Hindsight Regret** — best/worst single swap, scored over the
@@ -97,7 +97,7 @@ and takes longer than the weekly report.
 
 **Opting out of the lighthearted awards:** list FPL entry IDs in
 `award-opt-out.json` (e.g. `["6717668"]`). Those managers are skipped for The
-Casual, Sack the Manager, Hindsight Regret and Triple Captain Flop, and the
+Casual, Hindsight Regret and Triple Captain Flop, and the
 award goes to the next eligible manager. Praise awards are unaffected.
 
 It's run by the separate one-off `season-review.yml` workflow, not the

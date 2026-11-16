@@ -1056,8 +1056,7 @@ async function postToSlack(webhookUrl, blocks) {
 // ---------------------------------------------------------------------------
 
 // Optional list of FPL entry IDs who've asked to sit out the lighthearted
-// "roast" awards (The Casual, Sack the Manager, Hindsight Regret, Triple
-// Captain Flop). They're left out of those, and the award goes to the next
+// "roast" awards (The Casual, Hindsight Regret, Triple Captain Flop). They're left out of those, and the award goes to the next
 // eligible manager. An absent file just means nobody has opted out.
 const OPT_OUT_PATH = new URL('./award-opt-out.json', import.meta.url);
 
@@ -1414,7 +1413,6 @@ function computeSeasonInsights(managers, liveByGw, gw, { events, since, optOut }
     peak: peakWeek(managers),
     topDog: topDog(managers, gw),
     casual: bottomBy(roastable, (m) => m.transfers.length),
-    sackTheManager: bottomBy(roastable, (m) => netOf.get(m)),
     directorOfFootball: directorOfFootball && directorOfFootball.value > 0 ? directorOfFootball : null,
     hero: swaps.hero,
     regret: swaps.regret,
@@ -1471,7 +1469,6 @@ function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, manag
     peak,
     topDog: leaders,
     casual,
-    sackTheManager,
     directorOfFootball,
     hero,
     regret,
@@ -1542,9 +1539,6 @@ function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, manag
     const hasnt = casual.winners.length === 1 ? "hasn't" : "haven't";
     const detail = casual.value === 0 ? `${hasnt} made a single transfer` : `just ${plural(casual.value, 'transfer')} all season`;
     awardLines.push(`:sloth: *The Casual:* ${winnersText(casual.winners, mapping)} — ${detail}`);
-  }
-  if (sackTheManager) {
-    awardLines.push(`:fire: *Sack the Manager:* ${winnersText(sackTheManager.winners, mapping)} — transfers have netted ${signed(sackTheManager.value)}pts (after hits)`);
   }
   if (regret) {
     awardLines.push(`:face_with_peeking_eye: *Hindsight Regret:* ${swapText(regret, mapping, elementInfo)} (before hits)`);
