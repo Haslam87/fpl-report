@@ -82,6 +82,8 @@ is shown "since GW N" (default: five gameweeks back). It contains:
 - **Director of Football** — best net points from
   transfers (incoming minus outgoing player's points from the transfer week
   onwards, minus hits; Free Hit weeks ignored)
+- **Armband Merchant** — most points from captains this season (vice-captain
+  counted when the captain didn't play)
 - **Hindsight Hero / Hindsight Regret** — best/worst single swap, scored over the
   weeks the new player was actually held (before hits)
 - **The Casual** — fewest transfers all season

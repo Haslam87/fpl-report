@@ -1318,6 +1318,15 @@ function captainReturn(picks, live) {
   return { element: armband, points: (live.get(armband)?.points ?? 0) * multiplier };
 }
 
+// Total points from the armband over the season so far.
+function seasonCaptainPoints(m, liveByGw) {
+  let total = 0;
+  for (const [g, picks] of m.picksByGw) {
+    total += captainReturn(picks, liveByGw.get(g))?.points ?? 0;
+  }
+  return total;
+}
+
 function chipPlays(managers, liveByGw) {
   const triple = [];
   const bench = [];
@@ -1414,6 +1423,7 @@ function computeSeasonInsights(managers, liveByGw, gw, { events, since, optOut }
     topDog: topDog(managers, gw),
     casual: bottomBy(roastable, (m) => m.transfers.length),
     directorOfFootball: directorOfFootball && directorOfFootball.value > 0 ? directorOfFootball : null,
+    armbandMerchant: topBy(full, (m) => seasonCaptainPoints(m, liveByGw)),
     hero: swaps.hero,
     regret: swaps.regret,
     bestTriple: extremeBy(plays.triple, 'points', 'max'),
@@ -1470,6 +1480,7 @@ function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, manag
     topDog: leaders,
     casual,
     directorOfFootball,
+    armbandMerchant,
     hero,
     regret,
     bestTriple,
@@ -1531,6 +1542,9 @@ function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, manag
   }
   if (directorOfFootball) {
     awardLines.push(`:briefcase: *Director of Football:* ${winnersText(directorOfFootball.winners, mapping)} — transfers have netted ${signed(directorOfFootball.value)}pts (after hits)`);
+  }
+  if (armbandMerchant) {
+    awardLines.push(`:muscle: *Armband Merchant:* ${winnersText(armbandMerchant.winners, mapping)} — ${armbandMerchant.value}pts from captains this season`);
   }
   if (hero) {
     awardLines.push(`:brain: *Hindsight Hero:* ${swapText(hero, mapping, elementInfo)} (before hits)`);
