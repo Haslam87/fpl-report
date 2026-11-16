@@ -1465,6 +1465,10 @@ function swapText(s, mapping, elementInfo) {
   );
 }
 
+// Opening line for the one-off season review post.
+const SEASON_REVIEW_INTRO =
+  'Break week. Time to stare at the table, regret your transfers and plan your comeback. Some stats to help with all three.';
+
 function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, managerCount, mapping }) {
   const blocks = [];
   const section = (text) => blocks.push({ type: 'section', text: { type: 'mrkdwn', text } });
@@ -1494,6 +1498,7 @@ function buildSeasonBlocks({ leagueName, gw, since, insights, elementInfo, manag
     type: 'header',
     text: { type: 'plain_text', text: `Season So Far (GW1–${gw}) — ${leagueName}`, emoji: true },
   });
+  section(SEASON_REVIEW_INTRO);
   section(`_Since the last update at GW${since} · ${managerCount} managers_`);
   blocks.push({ type: 'divider' });
 
