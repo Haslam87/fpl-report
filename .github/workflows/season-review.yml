@@ -19,7 +19,7 @@ jobs:
   season-review:
     runs-on: ubuntu-latest
     env:
-      POST: "false"
+      POST: "true"
     steps:
       - uses: actions/checkout@v7
 
